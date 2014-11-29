@@ -1,12 +1,13 @@
 title: Test Game
 
 ---
-type: command
+command:
 pattern: say #text#
-script: |
-    function(text) {
-        msg ("You say '" + text + "', but nobody replies.");
-    }
+action:
+    script: |
+        function(text) {
+            msg ("You say '" + text + "', but nobody replies.");
+        }
 
 ---
 location: lounge
@@ -26,16 +27,17 @@ watch: You watch for a few minutes. As your will to live slowly ebbs away, you r
 character: Bob
 type: male
 look: "{if Bob.alive:Bob is sitting up, appearing to feel somewhat under the weather.}{else:Bob is lying on the floor, a lot more still than usual.}"
-use[defibrillator]: |
-    function() {
-        if (get("Bob.alive")) {
-            msg ("Bob is alive so you don't need to use the defibrilltor again.")
+use[defibrillator]:
+    script: |
+        function() {
+            if (get("Bob.alive")) {
+                msg ("Bob is alive so you don't need to use the defibrilltor again.")
+            }
+            else {
+                msg ("Miraculously, the defibrillator lived up to its promise, and Bob is now alive again. He says his head feels kind of fuzzy.");
+                set ("Bob.alive", true);
+            }
         }
-        else {
-            msg ("Miraculously, the defibrillator lived up to its promise, and Bob is now alive again. He says his head feels kind of fuzzy.");
-            set ("Bob.alive", true);
-        }
-    }
 
 ---
 object: table
@@ -60,18 +62,20 @@ description: Just an ordinary kitchen.
 object: eggs
 weight: 250
 prefix: some
-look: |
-    function() {
-        msg ("A box of eggs, weighing " + get("eggs.weight") + " grams.");
-    }
+look:
+    script: |
+        function() {
+            msg ("A box of eggs, weighing " + get("eggs.weight") + " grams.");
+        }
 
 ---
-type: command
+command:
 pattern: weigh #object#
-script: |
-    function(object) {
-        msg ("It weighs " + get(object, "weight") + " grams.");
-    }
+action:
+    script: |
+        function(object) {
+            msg ("It weighs " + get(object, "weight") + " grams.");
+        }
 
 ---
 object: fridge
