@@ -1,3 +1,7 @@
+index.html
+story.js
+style.css
+examples/*/jquery*.js
 _site
 
 # Logs

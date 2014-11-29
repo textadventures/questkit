@@ -1,14 +1,24 @@
 #!/usr/bin/env node
 
+var questKitVersion = "0.0.1";
+
 var path = require("path");
 var fs = require("fs");
 
-var questKitVersion = "0.0.1";
+String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) { 
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match
+      ;
+    });
+};
 
 function Compiler() {
     this.process = function(inputFilename, sourcePath, options) {
         var outputPath = path.resolve(path.dirname(inputFilename));
-        var yaml = require('js-yaml');
+        var yaml = require("js-yaml");
 
         var file = fs.readFileSync(inputFilename, "utf8");
 
@@ -21,6 +31,15 @@ function Compiler() {
             console.log(e);
             return;
         }
+
+        var jsTemplateFile = fs.readFileSync(path.join(sourcePath, "questkit.template.js"));
+        var jsData = "// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n".format(questKitVersion) + jsTemplateFile.toString();
+
+        var outputJsFile = [];
+        outputJsFile.push(jsData);
+        outputJsFile.push("\n\n");
+
+        fs.writeFileSync(path.join(outputPath, "story.js"), outputJsFile.join(""));
 
         console.log("Done.");
 
@@ -38,7 +57,7 @@ function Compiler() {
 
 console.log("QuestKit " + questKitVersion);
 
-var argv = require('yargs')
+var argv = require("yargs")
     .usage("Compiles a QuestKit script file into HTML and JavaScript.\nFor help, see http://docs.textadventures.co.uk/questkit/\nUsage: $0 filename.yaml [options]")
     .demand(1)
     .argv;
