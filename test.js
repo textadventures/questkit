@@ -9,29 +9,67 @@ var Quest = {
 	},
 	HandleCommand: function(input) {
 		Quest._internal.commands.forEach(function(cmd) {
-			var match = Quest._internal.regexes[cmd].pattern.exec(input);
-			if (match) {
-				var args = match.slice(0);
-				args.shift();
-				Quest._internal.scripts[cmd + ".action"].apply(this, args);
-			}
+			Quest._internal.regexes[cmd].patterns.forEach(function(pattern) {
+				var match = pattern.exec(input);
+				if (match) {
+					var args = match.slice(0);
+					args.shift();
+					Quest._internal.scripts[cmd + ".action"].apply(this, args);
+				}
+			});
 		});
 	},
 }
 
 // Quest script commmands =====================================================
 
-function get(attribute) {
+function get(arg1, arg2) {
+	var attribute = arg1;
+	if (arg2) {
+		attribute = arg1 + "." + arg2;
+	}
 	return Quest._internal.attributes[attribute];
 }
 
-function set(attribute, value) {
+function set(arg1, arg2, arg3) {
+	var attribute = arg1;
+	var value = arg2;
+	if (arg3) {
+		attribute = arg1 + "." + arg2;
+		value = arg3;
+	}
 	Quest._internal.attributes[attribute] = value;
+}
+
+function getscript(arg1, arg2) {
+	var attribute = arg1;
+	if (arg2) {
+		attribute = arg1 + "." + arg2;
+	}
+	return Quest._internal.scripts[attribute];
 }
 
 function msg(text) {
 	console.log(text);
 }
+
+// Quest standard commands, which will come from some Core.yaml ===============
+
+Quest._internal.commands.push("lookat");
+Quest._internal.regexes["lookat"] = {
+	patterns: [/^look at (.*?)$/, /^x (.*?)$/],
+	groups: ["object"]
+};
+Quest._internal.scripts["lookat.action"] = function(object) {
+	var text = get(object, "look");
+	if (text) {
+		msg(text);
+	}
+	var script = getscript(object, "look");
+	if (script) {
+		script();
+	}
+};
 
 // Converted result of test.yaml ==============================================
 
@@ -39,7 +77,7 @@ set("game.title", "Test Game");
 
 Quest._internal.commands.push("k1");
 Quest._internal.regexes["k1"] = {
-	pattern: /^say (.*?)$/,
+	patterns: [/^say (.*?)$/],
 	groups: ["text"]
 };
 Quest._internal.scripts["k1.action"] = function(text) {
@@ -108,7 +146,7 @@ Quest._internal.scripts["eggs.look"] = function() {
 Quest._internal.commands.push("k4");
 set("k4.parent", "kitchen");
 Quest._internal.regexes["k4"] = {
-	pattern: /^weigh (.*?)$/,
+	patterns: [/^weigh (.*?)$/],
 	groups: ["object"]
 };
 Quest._internal.scripts["k4.action"] = function(object) {
@@ -131,6 +169,10 @@ set("cheese.prefix", "some");
 Quest._internal.objects.push("beer");
 set("beer.parent", "fridge");
 set("beer.prefix", "some");
+
+Quest._internal.objects.push("player");
+set("player.parent", "lounge");
+set("pov", "player");
 
 // A simple way of running this as a node console app for now ======================
 
