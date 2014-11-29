@@ -2,7 +2,7 @@ title: Test Game
 
 ---
 command:
-pattern: say #text#
+pattern: "say #text#"
 action:
     script: |
         function(text) {
@@ -70,7 +70,7 @@ look:
 
 ---
 command:
-pattern: weigh #object#
+pattern: "weigh #object#"
 action:
     script: |
         function(object) {
