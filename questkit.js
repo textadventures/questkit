@@ -21,10 +21,11 @@ function Compiler() {
         var yaml = require("js-yaml");
 
         var file = fs.readFileSync(inputFilename, "utf8");
+        var sections = [];
 
         try {
             var docs = yaml.safeLoadAll(file, function(doc) {
-                console.log(doc);
+                sections.push(doc);
             });
         }
         catch (e) {
@@ -32,12 +33,21 @@ function Compiler() {
             return;
         }
 
+        console.log("Loaded {0} sections".format(sections.length));
+        console.log("Writing story.js");
+
         var jsTemplateFile = fs.readFileSync(path.join(sourcePath, "questkit.template.js"));
         var jsData = "// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n".format(questKitVersion) + jsTemplateFile.toString();
 
         var outputJsFile = [];
         outputJsFile.push(jsData);
         outputJsFile.push("\n\n");
+
+        var game = sections.shift();
+
+        Object.keys(game).forEach(function(attr) {
+            outputJsFile.push("set(\"{0}\", {1});".format(attr, JSON.stringify(game[attr])));
+        });
 
         fs.writeFileSync(path.join(outputPath, "story.js"), outputJsFile.join(""));
 
