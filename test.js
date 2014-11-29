@@ -5,8 +5,14 @@ var Quest = {
 		objects: [],
 		commands: [],
 		exits: [],
-	}
+		regexes: {},
+	},
+	HandleCommand: function(command) {
+		msg(command);
+	},
 }
+
+// Quest script commmands =====================================================
 
 function get(attribute) {
 	return Quest._internal.attributes[attribute];
@@ -16,10 +22,19 @@ function set(attribute, value) {
 	Quest._internal.attributes[attribute] = value;
 }
 
+function msg(text) {
+	console.log(text);
+}
+
+// Converted result of test.yaml ==============================================
+
 set("game.title", "Test Game");
 
 Quest._internal.commands.push("k1");
-set("k1.pattern", "say #text#")
+Quest._internal.regexes["k1"] = {
+	pattern: /^say (.*?)$/,
+	groups: ["text"]
+};
 Quest._internal.scripts["k1.script"] = function(text) {
 	msg ("You say '" + text + "', but nobody replies.");
 };
@@ -85,7 +100,10 @@ Quest._internal.scripts["eggs.look"] = function() {
 
 Quest._internal.commands.push("k4");
 set("k4.parent", "kitchen");
-set("k4.pattern", "pattern: weigh #object#");
+Quest._internal.regexes["k4"] = {
+	pattern: /^weigh (.*?)$/,
+	groups: ["object"]
+};
 Quest._internal.scripts["k4.script"] = function(object) {
 	msg ("It weighs " + get(object, "weight") + " grams.");
 };
@@ -106,3 +124,25 @@ set("cheese.prefix", "some");
 Quest._internal.objects.push("beer");
 set("beer.parent", "fridge");
 set("beer.prefix", "some");
+
+// A simple way of running this as a node console app for now ======================
+
+var readline = require('readline');
+
+var rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout
+});
+
+rl.setPrompt("> ");
+rl.prompt();
+
+rl.on("line", function(input) {
+	if (input == "q") {
+		rl.close();
+	}
+	else {
+		Quest.HandleCommand(input);
+		rl.prompt();
+	}
+});
