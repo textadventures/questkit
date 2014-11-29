@@ -96,10 +96,10 @@ function Compiler() {
                 delete section.pattern;
             }
             section.patterns.forEach(function(pattern) {
-                pattern = pattern.replace(/\(/g, "\(");
-                pattern = pattern.replace(/\)/g, "\)");
-                pattern = pattern.replace(/\./g, "\.");
-                pattern = pattern.replace(/\?/g, "\?");
+                pattern = pattern.replace(/\(/g, "\\(");
+                pattern = pattern.replace(/\)/g, "\\)");
+                pattern = pattern.replace(/\./g, "\\.");
+                pattern = pattern.replace(/\?/g, "\\?");
                 pattern = pattern.replace(/\#.*?\#/g, "(.*?)");
                 patterns.push("/^" + pattern + "$/");
             });
