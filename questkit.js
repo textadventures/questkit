@@ -42,6 +42,7 @@ function Compiler() {
         });
 
         sections.forEach(function(section) {
+            outputJsFile.push("\n");
             this.writeSection(outputJsFile, section);
         }, this);
 
@@ -124,16 +125,22 @@ function Compiler() {
             }
         }
 
+        // TODO: Exits for "south:" attributes etc.
+        // TODO: Set parent for objects
+        // TODO: Add player to first location, if pov is not otherwise defined
+
         var attrs = Object.keys(section).slice(0);
         attrs.shift();
         attrs.forEach(function (attr) {
             if (section[attr].script) {
-                // save script
+                outputJsFile.push("Quest._internal.scripts[\"{0}.{1}\"] = function() {\n".format(name, attr));
+                this.writeJs(outputJsFile, 1, section[attr].script);
+                outputJsFile.push("};\n");
             }
             else {
                 outputJsFile.push("set(\"{0}.{1}\", {2});\n".format(name, attr, JSON.stringify(section[attr])));
             }
-        });
+        }, this);
     };
 
     this.writeJs = function(outputJsFile, tabCount, js) {
