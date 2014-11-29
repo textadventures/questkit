@@ -88,6 +88,29 @@ function Compiler() {
 
         outputJsFile.push("Quest._internal.{0}.push(\"{1}\");\n".format(this.sectionTypes[type], name));
 
+        if (type == "command") {
+            var patterns = [];
+            if (!section.patterns) section.patterns = [];
+            if (section.pattern) {
+                section.patterns.push(section.pattern)
+                delete section.pattern;
+            }
+            section.patterns.forEach(function(pattern) {
+                pattern = pattern.replace(/\(/g, "\(");
+                pattern = pattern.replace(/\)/g, "\)");
+                pattern = pattern.replace(/\./g, "\.");
+                pattern = pattern.replace(/\?/g, "\?");
+                pattern = pattern.replace(/\#.*?\#/g, "(.*?)");
+                patterns.push("/^" + pattern + "$/");
+            });
+            delete section.patterns;
+
+            outputJsFile.push("Quest._internal.regexes[\"{0}\"] = {\n".format(name));
+            outputJsFile.push("\tpatterns: [{0}],\n".format(patterns.join(", ")));
+            outputJsFile.push("\tgroups: [\"text\"]\n");    // TODO
+            outputJsFile.push("};\n");
+        }
+
         var attrs = Object.keys(section).slice(0);
         attrs.shift();
         attrs.forEach(function (attr) {
