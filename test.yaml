@@ -4,10 +4,7 @@ title: Test Game
 command:
 pattern: "say #text#"
 action:
-    script: |
-        function(text) {
-            msg ("You say '" + text + "', but nobody replies.");
-        }
+    script: msg ("You say '" + text + "', but nobody replies.");
 
 ---
 location: lounge
@@ -29,14 +26,12 @@ type: male
 look: "{if Bob.alive:Bob is sitting up, appearing to feel somewhat under the weather.}{else:Bob is lying on the floor, a lot more still than usual.}"
 use[defibrillator]:
     script: |
-        function() {
-            if (get("Bob.alive")) {
-                msg ("Bob is alive so you don't need to use the defibrilltor again.")
-            }
-            else {
-                msg ("Miraculously, the defibrillator lived up to its promise, and Bob is now alive again. He says his head feels kind of fuzzy.");
-                set ("Bob.alive", true);
-            }
+        if (get("Bob.alive")) {
+            msg ("Bob is alive so you don't need to use the defibrilltor again.")
+        }
+        else {
+            msg ("Miraculously, the defibrillator lived up to its promise, and Bob is now alive again. He says his head feels kind of fuzzy.");
+            set ("Bob.alive", true);
         }
 
 ---
@@ -63,19 +58,13 @@ object: eggs
 weight: 250
 prefix: some
 look:
-    script: |
-        function() {
-            msg ("A box of eggs, weighing " + get("eggs.weight") + " grams.");
-        }
+    script: msg ("A box of eggs, weighing " + get("eggs.weight") + " grams.");
 
 ---
 command:
 pattern: "weigh #object#"
 action:
-    script: |
-        function(object) {
-            msg ("It weighs " + get(object, "weight") + " grams.");
-        }
+    script: msg ("It weighs " + get(object, "weight") + " grams.");
 
 ---
 object: fridge
