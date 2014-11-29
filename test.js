@@ -11,11 +11,9 @@ var Quest = {
 		Quest._internal.commands.forEach(function(cmd) {
 			var match = Quest._internal.regexes[cmd].pattern.exec(input);
 			if (match) {
-				var values = {};
-				Quest._internal.regexes[cmd].groups.forEach(function(name, index) {
-					values[name] = match[index + 1];
-				});
-				Quest._internal.scripts[cmd + ".action"](values);
+				var args = match.slice(0);
+				args.shift();
+				Quest._internal.scripts[cmd + ".action"].apply(this, args);
 			}
 		});
 	},
@@ -44,8 +42,8 @@ Quest._internal.regexes["k1"] = {
 	pattern: /^say (.*?)$/,
 	groups: ["text"]
 };
-Quest._internal.scripts["k1.action"] = function(args) {
-	msg ("You say '" + args.text + "', but nobody replies.");
+Quest._internal.scripts["k1.action"] = function(text) {
+	msg ("You say '" + text + "', but nobody replies.");
 };
 
 Quest._internal.objects.push("lounge");
@@ -113,8 +111,8 @@ Quest._internal.regexes["k4"] = {
 	pattern: /^weigh (.*?)$/,
 	groups: ["object"]
 };
-Quest._internal.scripts["k4.action"] = function(args) {
-	msg ("It weighs " + get(args.object, "weight") + " grams.");
+Quest._internal.scripts["k4.action"] = function(object) {
+	msg ("It weighs " + get(object, "weight") + " grams.");
 };
 
 Quest._internal.objects.push("fridge");
