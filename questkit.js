@@ -87,6 +87,12 @@ function Compiler() {
         if (!name) name = "~" + this.anonymousCount++;
 
         outputJsFile.push("Quest._internal.{0}.push(\"{1}\");\n".format(this.sectionTypes[type], name));
+
+        var attrs = Object.keys(section).slice(0);
+        attrs.shift();
+        attrs.forEach(function (attr) {
+            outputJsFile.push("set(\"{0}.{1}\", {2});\n".format(name, attr, JSON.stringify(section[attr])));
+        });
     };
 }
 
