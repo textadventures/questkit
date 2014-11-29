@@ -95,26 +95,52 @@ function Compiler() {
                 section.patterns.push(section.pattern)
                 delete section.pattern;
             }
+            var variablesRegex = /\#(.*?)\#/g;
+            var groups = [];
+            while (match = variablesRegex.exec(section.patterns[0])) {
+                groups.push(match[1]);
+            }
             section.patterns.forEach(function(pattern) {
                 pattern = pattern.replace(/\(/g, "\\(");
                 pattern = pattern.replace(/\)/g, "\\)");
                 pattern = pattern.replace(/\./g, "\\.");
                 pattern = pattern.replace(/\?/g, "\\?");
-                pattern = pattern.replace(/\#.*?\#/g, "(.*?)");
+                pattern = pattern.replace(variablesRegex, "(.*?)");
                 patterns.push("/^" + pattern + "$/");
             });
             delete section.patterns;
 
             outputJsFile.push("Quest._internal.regexes[\"{0}\"] = {\n".format(name));
             outputJsFile.push("\tpatterns: [{0}],\n".format(patterns.join(", ")));
-            outputJsFile.push("\tgroups: [\"text\"]\n");    // TODO
+            outputJsFile.push("\tgroups: {0}\n".format(JSON.stringify(groups)));
             outputJsFile.push("};\n");
+
+            if (section.action && section.action.script) {
+                outputJsFile.push("Quest._internal.scripts[\"{0}.action\"] = function({1}) {\n".format(name, groups.join(", ")));
+                this.writeJs(outputJsFile, 1, section.action.script);
+                outputJsFile.push("};\n");
+
+                delete section.action;
+            }
         }
 
         var attrs = Object.keys(section).slice(0);
         attrs.shift();
         attrs.forEach(function (attr) {
-            outputJsFile.push("set(\"{0}.{1}\", {2});\n".format(name, attr, JSON.stringify(section[attr])));
+            if (section[attr].script) {
+                // save script
+            }
+            else {
+                outputJsFile.push("set(\"{0}.{1}\", {2});\n".format(name, attr, JSON.stringify(section[attr])));
+            }
+        });
+    };
+
+    this.writeJs = function(outputJsFile, tabCount, js) {
+        var tabs = new Array(tabCount).join("\t");
+        var lines = js.trim().replace(/\r/g, "").split("\n");
+        lines.forEach(function(jsLine) {
+            outputJsFile.push("{0}\t{1}\n".format(tabs, jsLine));
         });
     };
 }
