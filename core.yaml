@@ -1,0 +1,14 @@
+command: lookat
+patterns:
+    - "look at #object#"
+    - "x #object#"
+action:
+    script: |
+        var text = get(object, "look");
+        if (text) {
+            msg(text);
+        }
+        var script = getscript(object, "look");
+        if (script) {
+            script();
+        }
