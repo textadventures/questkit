@@ -8,6 +8,19 @@ var questKitVersion = "0.0.1";
 function Compiler() {
     this.process = function(inputFilename, sourcePath, options) {
         var outputPath = path.resolve(path.dirname(inputFilename));
+        var yaml = require('js-yaml');
+
+        var file = fs.readFileSync(inputFilename, "utf8");
+
+        try {
+            var docs = yaml.safeLoadAll(file, function(doc) {
+                console.log(doc);
+            });
+        }
+        catch (e) {
+            console.log(e);
+            return;
+        }
 
         console.log("Done.");
 
