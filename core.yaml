@@ -3,13 +3,19 @@ patterns:
     template: lookat
 action:
     script: |
+        var found = false;
         var text = get(object, "look");
         if (text) {
             msg(text);
+            found = true;
         }
         var script = getscript(object, "look");
         if (script) {
             script();
+            found = true;
+        }
+        if (!found) {
+            msg(Quest.Template("DefaultObjectDescription"));
         }
 
 ---
