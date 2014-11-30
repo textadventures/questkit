@@ -8,13 +8,42 @@ var Quest = {
 		regexes: {},
 	},
 	HandleCommand: function(input) {
+		// TODO: Full conversion
 		Quest.ScopeCommands().forEach(function(cmd) {
 			Quest._internal.regexes[cmd].patterns.forEach(function(pattern) {
 				var match = pattern.exec(input);
 				if (match) {
 					var args = match.slice(0);
 					args.shift();
-					Quest._internal.scripts[cmd + ".action"].apply(this, args);
+					var resolved = true;
+					Quest._internal.regexes[cmd].groups.forEach(function(group, index) {
+						if (group.indexOf("object") != 0) return;
+						// Resolve object name
+
+						var check = args[index].toLowerCase();
+						var found = false;
+						// TODO: Use a Scope function instead
+						Quest._internal.objects.forEach(function(object) {
+							if (object.toLowerCase() == check) {
+								args[index] = object;
+								found = true;
+								return;
+							}
+						});
+						// TODO: Handle aliases, disambiguation etc...
+
+						if (!found) {
+							resolved = false;
+							return;
+						} 
+					});
+					if (resolved) {
+						Quest._internal.scripts[cmd + ".action"].apply(this, args);
+					}
+					else {
+						// TODO: Get proper message from template
+						console.log("Not resolved");
+					}
 				}
 			});
 		});
