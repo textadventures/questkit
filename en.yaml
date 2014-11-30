@@ -1,0 +1,6 @@
+lookat:
+    - "look at #object#"
+    - "x #object#"
+    - "examine #object#"
+    - "exam #object#"
+    - "ex #object#"

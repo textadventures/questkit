@@ -17,8 +17,12 @@ String.prototype.format = function() {
 };
 
 function Compiler() {
+    this.language = {};
+
     this.process = function(inputFilename, sourcePath, options) {
         var outputPath = path.resolve(path.dirname(inputFilename));
+
+        this.language = yaml.safeLoad(fs.readFileSync(path.join(sourcePath, "en.yaml")));
 
         var sections = [];
 
@@ -88,6 +92,16 @@ function Compiler() {
 
         var docs = yaml.safeLoadAll(file, function(section) {
             sections.push(section);
+
+            // If any attribute has a sub-attribute "template", replace it with the value from the loaded language file
+
+            Object.keys(section).forEach(function(attr) {
+                if (section[attr] && section[attr].template) {
+                    console.log(section[attr]);
+                    section[attr] = compiler.language[section[attr].template];
+                    console.log(section[attr]);
+                }
+            });
 
             if (++count == 1 && isFirst) {
                 // no further processing for the game data at the top of the first file

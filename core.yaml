@@ -1,7 +1,6 @@
 command: lookat
 patterns:
-    - "look at #object#"
-    - "x #object#"
+    template: lookat
 action:
     script: |
         var text = get(object, "look");
