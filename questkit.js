@@ -38,7 +38,7 @@ function Compiler() {
         var game = sections.shift();
 
         if (!game.pov) {
-            // If a player object doesn't exist already, create it?
+            // If a player object doesn't exist already, create it in the first location
 
             var foundPlayer = false;
             var firstLocation;
