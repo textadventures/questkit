@@ -90,9 +90,8 @@ function Compiler() {
         htmlData = htmlData.replace("<!-- INFO -->", "<!--\n\nCreated with QuestKit {0}\n\n\nhttps://github.com/textadventures/questkit\n\n-->".format(questKitVersion));
         htmlData = htmlData.replace("<!-- TITLE -->", game.title);
 
-        fs.createReadStream(path.join(sourcePath, "jquery.min.js")).pipe(fs.createWriteStream(path.join(outputPath, "jquery.min.js")));
-        fs.createReadStream(path.join(sourcePath, "jquery-ui.min.js")).pipe(fs.createWriteStream(path.join(outputPath, "jquery-ui.min.js")));
-        
+        fs.createReadStream(path.join(sourcePath, "node_modules", "jquery", "dist", "jquery.min.js")).pipe(fs.createWriteStream(path.join(outputPath, "jquery.min.js")));
+                
         fs.writeFileSync(path.join(outputPath, "index.html"), htmlData);
 
         console.log("Writing style.css");
