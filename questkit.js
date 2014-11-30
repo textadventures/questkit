@@ -22,8 +22,8 @@ function Compiler() {
 
         var sections = [];
 
-        this.processFile(sections, path.resolve(inputFilename));
-        this.processFile(sections, this.findFile("core.yaml", outputPath, sourcePath));
+        this.processFile(sections, path.resolve(inputFilename), true);
+        this.processFile(sections, this.findFile("core.yaml", outputPath, sourcePath), false);
 
         console.log("Loaded {0} sections".format(sections.length));
         console.log("Writing story.js");
@@ -53,10 +53,38 @@ function Compiler() {
         return outputPath;
     };
 
-    this.processFile = function(sections, inputFilename) {
+    this.processFile = function(sections, inputFilename, isFirst) {
+        var compiler = this;
         var file = fs.readFileSync(inputFilename, "utf8");
-        var docs = yaml.safeLoadAll(file, function(doc) {
-            sections.push(doc);
+
+        var defaultParent;
+        var count = 0;
+
+        var docs = yaml.safeLoadAll(file, function(section) {
+            sections.push(section);
+
+            if (++count == 1 && isFirst) {
+                // no further processing for the game data at the top of the first file
+                return;
+            }
+
+            var type = Object.keys(section)[0];
+            if (!(type in compiler.sectionTypes)) {
+                throw "Unknown type - {0}: {1}".format(type, section[type]);
+            }
+            
+            var name = section[type];
+            if (!name) name = "~" + compiler.anonymousCount++;
+
+            if (type == "location") {
+                defaultParent = name;
+            }
+            else {
+                if (defaultParent && !section.parent) section.parent = defaultParent;
+            }
+
+            section["~type"] = type;
+            section["~name"] = name;
         });
     };
 
@@ -79,14 +107,8 @@ function Compiler() {
     this.anonymousCount = 0;
 
     this.writeSection = function(outputJsFile, section) {
-        var type = Object.keys(section)[0];
-        if (!(type in this.sectionTypes)) {
-            throw "Unknown type - {0}: {1}".format(type, section[type]);
-        }
-        
-        var name = section[type];
-        if (!name) name = "~" + this.anonymousCount++;
-
+        var type = section["~type"];
+        var name = section["~name"];
         outputJsFile.push("Quest._internal.{0}.push(\"{1}\");\n".format(this.sectionTypes[type], name));
 
         if (type == "command") {
@@ -126,12 +148,12 @@ function Compiler() {
         }
 
         // TODO: Exits for "south:" attributes etc.
-        // TODO: Set parent for objects
         // TODO: Add player to first location, if pov is not otherwise defined
 
         var attrs = Object.keys(section).slice(0);
         attrs.shift();
         attrs.forEach(function (attr) {
+            if (attr.indexOf("~") == 0) return;
             if (section[attr].script) {
                 outputJsFile.push("Quest._internal.scripts[\"{0}.{1}\"] = function() {\n".format(name, attr));
                 this.writeJs(outputJsFile, 1, section[attr].script);
