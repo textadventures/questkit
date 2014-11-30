@@ -25,7 +25,7 @@ var Quest = {
 
 						var check = args[index].toLowerCase();
 						var found = false;
-						// TODO: Use a Scope function instead
+
 						Quest.ScopeVisible().forEach(function(object) {
 							if (object.toLowerCase() == check) {
 								args[index] = object;
