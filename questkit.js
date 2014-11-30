@@ -97,9 +97,7 @@ function Compiler() {
 
             Object.keys(section).forEach(function(attr) {
                 if (section[attr] && section[attr].template) {
-                    console.log(section[attr]);
                     section[attr] = compiler.language[section[attr].template];
-                    console.log(section[attr]);
                 }
             });
 
