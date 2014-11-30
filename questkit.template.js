@@ -8,7 +8,7 @@ var Quest = {
 		regexes: {},
 	},
 	HandleCommand: function(input) {
-		Quest._internal.commands.forEach(function(cmd) {
+		Quest.ScopeCommands().forEach(function(cmd) {
 			Quest._internal.regexes[cmd].patterns.forEach(function(pattern) {
 				var match = pattern.exec(input);
 				if (match) {
@@ -18,6 +18,16 @@ var Quest = {
 				}
 			});
 		});
+	},
+	ScopeCommands: function() {
+		var result = [];
+		Quest._internal.commands.forEach(function(cmd) {
+			var parent = get(cmd, "parent");
+			if (!parent || parent == get(get("pov"), "parent")) {
+				result.push(cmd);
+			}
+		});
+		return result;
 	},
 }
 
