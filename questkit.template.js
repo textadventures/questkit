@@ -205,27 +205,15 @@ function getscript(arg1, arg2) {
 }
 
 function msg(text) {
-	console.log(text);
+	$("#questkit-output").append(text + "<br/>");
 }
 
-// A simple way of running this as a node console app for now ======================
-
-var readline = require('readline');
-
-var rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout
-});
-
-rl.setPrompt("> ");
-rl.prompt();
-
-rl.on("line", function(input) {
-	if (input == "q") {
-		rl.close();
-	}
-	else {
+$(function() {
+	$("#questkit-input").keydown(function(e) {
+		if (e.which != 13) return;
+		var input = $("#questkit-input").val();
+		$("#questkit-input").val("");
+		msg("<br/>&gt; " + input + "<br/>");
 		Quest.HandleCommand(input);
-		rl.prompt();
-	}
+	});
 });

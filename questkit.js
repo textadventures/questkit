@@ -83,6 +83,24 @@ function Compiler() {
 
         fs.writeFileSync(path.join(outputPath, "story.js"), outputJsFile.join(""));
 
+        console.log("Writing index.html");
+
+        var htmlTemplateFile = fs.readFileSync(this.findFile("index.template.html", outputPath, sourcePath));
+        var htmlData = htmlTemplateFile.toString();
+        htmlData = htmlData.replace("<!-- INFO -->", "<!--\n\nCreated with QuestKit {0}\n\n\nhttps://github.com/textadventures/questkit\n\n-->".format(questKitVersion));
+        htmlData = htmlData.replace("<!-- TITLE -->", game.title);
+
+        fs.createReadStream(path.join(sourcePath, "jquery.min.js")).pipe(fs.createWriteStream(path.join(outputPath, "jquery.min.js")));
+        fs.createReadStream(path.join(sourcePath, "jquery-ui.min.js")).pipe(fs.createWriteStream(path.join(outputPath, "jquery-ui.min.js")));
+        
+        fs.writeFileSync(path.join(outputPath, "index.html"), htmlData);
+
+        console.log("Writing style.css");
+
+        var cssTemplateFile = fs.readFileSync(this.findFile("style.template.css", outputPath, sourcePath));
+        var cssData = cssTemplateFile.toString();
+        fs.writeFileSync(path.join(outputPath, "style.css"), cssData);
+
         console.log("Done.");
 
         return outputPath;
