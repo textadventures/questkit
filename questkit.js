@@ -37,6 +37,8 @@ function Compiler() {
 
         var game = sections.shift();
 
+        // TODO: Add player to first location, if pov is not otherwise defined
+
         Object.keys(game).forEach(function(attr) {
             outputJsFile.push("set(\"{0}\", {1});\n".format(attr, JSON.stringify(game[attr])));
         });
@@ -77,7 +79,33 @@ function Compiler() {
             if (!name) name = "~" + compiler.anonymousCount++;
 
             if (type == "location") {
+                // set default parent to this for subsequent objects, exits etc.
                 defaultParent = name;
+
+                // convert any directional attributes into exits
+                Object.keys(compiler.directions).forEach(function(direction) {
+                    if (!(direction in section)) return;
+
+                    // create the exit
+                    sections.push({
+                        "~name": "~" + compiler.anonymousCount++,
+                        "~type": "exit",
+                        parent: name,
+                        direction: direction,
+                        to: section[direction]
+                    });
+
+                    // and the exit in the opposite direction
+                    sections.push({
+                        "~name": "~" + compiler.anonymousCount++,
+                        "~type": "exit",
+                        parent: section[direction],
+                        direction: compiler.directions[direction],
+                        to: name
+                    });                    
+
+                    delete section[direction];
+                });
             }
             else {
                 if (defaultParent && !section.parent) section.parent = defaultParent;
@@ -96,6 +124,8 @@ function Compiler() {
         return path.join(sourcePath, filename);
     };
 
+    // section types and the _internal list they live in
+
     this.sectionTypes = {
         "command": "commands",
         "location": "objects",
@@ -103,6 +133,23 @@ function Compiler() {
         "character": "objects",
         "exit": "exits",
     };
+
+    // directions and their opposites
+
+    this.directions = {
+        "north": "south",
+        "east": "west",
+        "south": "north",
+        "west": "east",
+        "northeast": "southwest",
+        "southeast": "northwest",
+        "southwest": "northeast",
+        "northwest": "southeast",
+        "up": "down",
+        "down": "up",
+        "in": "out",
+        "out": "in",
+    }
 
     this.anonymousCount = 0;
 
@@ -146,9 +193,6 @@ function Compiler() {
                 delete section.action;
             }
         }
-
-        // TODO: Exits for "south:" attributes etc.
-        // TODO: Add player to first location, if pov is not otherwise defined
 
         var attrs = Object.keys(section).slice(0);
         attrs.shift();
