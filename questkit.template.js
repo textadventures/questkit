@@ -50,9 +50,10 @@ var Quest = {
 	},
 	ScopeCommands: function() {
 		var result = [];
+		var povParent = get(get("pov"), "parent");
 		Quest._internal.commands.forEach(function(cmd) {
 			var parent = get(cmd, "parent");
-			if (!parent || parent == get(get("pov"), "parent")) {
+			if (!parent || parent == povParent) {
 				result.push(cmd);
 			}
 		});
