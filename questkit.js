@@ -37,7 +37,31 @@ function Compiler() {
 
         var game = sections.shift();
 
-        // TODO: Add player to first location, if pov is not otherwise defined
+        if (!game.pov) {
+            // If a player object doesn't exist already, create it?
+
+            var foundPlayer = false;
+            var firstLocation;
+
+            sections.forEach(function(section) {
+                if (section["~name"] == "player") {
+                    foundPlayer = true;
+                    return;
+                }
+
+                if (!firstLocation && section["~type"] == "location") {
+                    firstLocation = section["~name"];
+                }
+            });
+
+            if (!foundPlayer) {
+                sections.push({
+                    "~name": "player",
+                    "~type": "object",
+                    parent: firstLocation
+                });
+            }
+        }
 
         Object.keys(game).forEach(function(attr) {
             outputJsFile.push("set(\"{0}\", {1});\n".format(attr, JSON.stringify(game[attr])));
