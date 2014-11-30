@@ -59,3 +59,10 @@ godown:
     - go down
     - down
     - d
+
+# Default text
+
+defaults:
+    UnresolvedObject: I can't see that.
+    UnresolvedLocation: You can't go there.
+    DefaultObjectDescription: Nothing out of the ordinary.

@@ -43,7 +43,7 @@ function Compiler() {
 
         if (!game.pov) {
             game.pov = "player";
-            
+
             // If a player object doesn't exist already, create it in the first location
 
             var foundPlayer = false;
@@ -77,6 +77,9 @@ function Compiler() {
             outputJsFile.push("\n");
             this.writeSection(outputJsFile, section);
         }, this);
+
+        outputJsFile.push("\n");
+        outputJsFile.push("Quest._internal.templates = " + JSON.stringify(this.language.defaults, null, "\t"));
 
         fs.writeFileSync(path.join(outputPath, "story.js"), outputJsFile.join(""));
 

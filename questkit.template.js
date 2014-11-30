@@ -44,8 +44,7 @@ var Quest = {
 						Quest._internal.scripts[cmd + ".action"].apply(this, args);
 					}
 					else {
-						// TODO: Get proper message from template
-						msg("Not resolved");
+						msg(Quest.Template("UnresolvedObject"));
 					}
 				}
 			});
@@ -143,7 +142,10 @@ var Quest = {
 		return result;
 	},
 	GoDirection: function(direction) {
-		msg("OK " + direction);
+		msg(Quest.Template("UnresolvedLocation"));
+	},
+	Template: function(template) {
+		return Quest._internal.templates[template];
 	},
 }
 
