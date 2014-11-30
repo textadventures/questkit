@@ -11,3 +11,87 @@ action:
         if (script) {
             script();
         }
+
+---
+command: gonorth
+patterns:
+    template: gonorth
+action:
+    script: Quest.GoDirection("north");
+
+---
+command: gosouth
+patterns:
+    template: gosouth
+action:
+    script: Quest.GoDirection("south");
+
+---
+command: goeast
+patterns:
+    template: goeast
+action:
+    script: Quest.GoDirection("east");
+
+---
+command: gowest
+patterns:
+    template: gowest
+action:
+    script: Quest.GoDirection("west");
+
+---
+command: gonortheast
+patterns:
+    template: gonortheast
+action:
+    script: Quest.GoDirection("northeast");
+
+---
+command: gosoutheast
+patterns:
+    template: gosoutheast
+action:
+    script: Quest.GoDirection("southeast");
+
+---
+command: gosouthwest
+patterns:
+    template: gosouthwest
+action:
+    script: Quest.GoDirection("southwest");
+
+---
+command: gonorthwest
+patterns:
+    template: gonorthwest
+action:
+    script: Quest.GoDirection("northwest");
+
+---
+command: goin
+patterns:
+    template: goin
+action:
+    script: Quest.GoDirection("in");
+
+---
+command: goout
+patterns:
+    template: goout
+action:
+    script: Quest.GoDirection("out");
+
+---
+command: goup
+patterns:
+    template: goup
+action:
+    script: Quest.GoDirection("up");
+
+---
+command: godown
+patterns:
+    template: godown
+action:
+    script: Quest.GoDirection("down");

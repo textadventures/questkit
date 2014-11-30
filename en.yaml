@@ -4,3 +4,58 @@ lookat:
     - "examine #object#"
     - "exam #object#"
     - "ex #object#"
+gonorth:
+    - go north
+    - go to north
+    - north
+    - n
+gosouth:
+    - go south
+    - go to south
+    - south
+    - s
+goeast:
+    - go east
+    - go to east
+    - east
+    - e
+gowest:
+    - go west
+    - go to west
+    - west
+    - w
+gonortheast:
+    - go northeast
+    - go to northeast
+    - northeast
+    - ne
+gosoutheast:
+    - go southeast
+    - go to southeast
+    - southeast
+    - se
+gosouthwest:
+    - go southwest
+    - go to southwest
+    - southwest
+    - sw
+gonorthwest:
+    - go northwest
+    - go to northwest
+    - northwest
+    - nw
+goin:
+    - go in
+    - in
+goout:
+    - go out
+    - out
+    - o
+goup:
+    - go up
+    - up
+    - u
+godown:
+    - go down
+    - down
+    - d

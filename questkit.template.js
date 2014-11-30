@@ -142,6 +142,9 @@ var Quest = {
 		});
 		return result;
 	},
+	GoDirection: function(direction) {
+		msg("OK " + direction);
+	},
 }
 
 // Quest script commmands =====================================================
