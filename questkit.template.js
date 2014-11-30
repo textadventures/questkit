@@ -142,7 +142,34 @@ var Quest = {
 		return result;
 	},
 	GoDirection: function(direction) {
-		msg(Quest.Template("UnresolvedLocation"));
+		// TODO: Locked exits, exits with scripts, non-directional exits
+		var foundExit;
+		Quest.ScopeExits().forEach(function(exit) {
+			if (get(exit, "direction") == direction) {
+				foundExit = exit;
+				return;
+			}
+		});
+
+		if (!foundExit) {
+			msg(Quest.Template("UnresolvedLocation"));
+			return;
+		}
+
+		set(get("pov"), "parent", get(foundExit, "to"));		
+	},
+	ScopeExits: function() {
+		return Quest.ScopeExitsForLocation(Quest.PovParent());
+	},
+	ScopeExitsForLocation: function(location) {
+		var result = [];
+		Quest._internal.exits.forEach(function(exit) {
+			if (get(exit, "parent") != location) return;
+			if (get(exit, "visible") == false) return;
+			if (get(location, "darklevel") && !get(exit, "lightsource")) return;
+		  	result.push(exit);
+		});
+		return result;
 	},
 	Template: function(template) {
 		return Quest._internal.templates[template];
