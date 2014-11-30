@@ -27,7 +27,7 @@ look: "{if Bob.alive:Bob is sitting up, appearing to feel somewhat under the wea
 use[defibrillator]:
     script: |
         if (get("Bob.alive")) {
-            msg ("Bob is alive so you don't need to use the defibrilltor again.")
+            msg ("Bob is alive so you don't need to use the defibrillator again.")
         }
         else {
             msg ("Miraculously, the defibrillator lived up to its promise, and Bob is now alive again. He says his head feels kind of fuzzy.");
