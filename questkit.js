@@ -9,10 +9,7 @@ var yaml = require('js-yaml');
 String.prototype.format = function () {
     var args = arguments;
     return this.replace(/{(\d+)}/g, function (match, number) { 
-      return typeof args[number] != 'undefined'
-        ? args[number]
-        : match
-      ;
+      return typeof args[number] != 'undefined' ? args[number] : match;
     });
 };
 
@@ -213,7 +210,7 @@ function Compiler() {
         'down': 'up',
         'in': 'out',
         'out': 'in',
-    }
+    };
 
     this.anonymousCount = 0;
 
@@ -226,12 +223,12 @@ function Compiler() {
             var patterns = [];
             if (!section.patterns) section.patterns = [];
             if (section.pattern) {
-                section.patterns.push(section.pattern)
+                section.patterns.push(section.pattern);
                 delete section.pattern;
             }
             var variablesRegex = /\#(.*?)\#/g;
             var groups = [];
-            while (match = variablesRegex.exec(section.patterns[0])) {
+            while (!!(match = variablesRegex.exec(section.patterns[0]))) {
                 groups.push(match[1]);
             }
             section.patterns.forEach(function (pattern) {
@@ -261,7 +258,7 @@ function Compiler() {
         var attrs = Object.keys(section).slice(0);
         attrs.shift();
         attrs.forEach(function (attr) {
-            if (attr.indexOf('~') == 0) return;
+            if (attr.indexOf('~') === 0) return;
             if (section[attr].script) {
                 outputJsFile.push('initData.scripts[\'{0}.{1}\'] = function () {\n'.format(name, attr));
                 this.writeJs(outputJsFile, 1, section[attr].script);

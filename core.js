@@ -28,7 +28,7 @@ if (typeof questkit === 'undefined') questkit = {};
 					args.shift();
 					var resolved = true;
 					world.regexes[cmd].groups.forEach(function (group, index) {
-						if (group.indexOf('object') != 0) return;
+						if (group.indexOf('object') !== 0) return;
 						// Resolve object name
 
 						var check = args[index].toLowerCase();
@@ -113,7 +113,7 @@ if (typeof questkit === 'undefined') questkit = {};
 	var containsAccessible = function (parent, search, onlyReachable) {
 		var searchParent = get(search, 'parent');
 		if (!searchParent) return false;
-		if (get(search, 'visible') == false) return false;
+		if (get(search, 'visible') === false) return false;
 		if (get(parent, 'darklevel') && !get(search, 'lightsource')) return false;
 		if (searchParent == parent) return true;
 		
@@ -189,7 +189,7 @@ if (typeof questkit === 'undefined') questkit = {};
 		var result = [];
 		world.exits.forEach(function (exit) {
 			if (get(exit, 'parent') != location) return;
-			if (get(exit, 'visible') == false) return;
+			if (get(exit, 'visible') === false) return;
 			if (get(location, 'darklevel') && !get(exit, 'lightsource')) return;
 		  	result.push(exit);
 		});
@@ -208,7 +208,7 @@ if (typeof questkit === 'undefined') questkit = {};
 			attribute = arg1 + '.' + arg2;
 		}
 		return world.attributes[attribute];
-	}
+	};
 
 	questkit.set = function (arg1, arg2, arg3) {
 		var attribute = arg1;

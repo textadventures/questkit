@@ -4,7 +4,7 @@ if (typeof questkit.ui === 'undefined') questkit.ui = {};
 (function () {
 	questkit.ui.addText = function (text) {
 		$('#questkit-output').append(text + '<br/>');
-	}
+	};
 })();
 
 $(function () {
