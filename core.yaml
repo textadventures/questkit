@@ -15,7 +15,7 @@ action:
             found = true;
         }
         if (!found) {
-            msg(Quest.Template("DefaultObjectDescription"));
+            msg(questkit.Template("DefaultObjectDescription"));
         }
 
 ---
@@ -23,81 +23,81 @@ command: gonorth
 patterns:
     template: gonorth
 action:
-    script: Quest.GoDirection("north");
+    script: questkit.GoDirection("north");
 
 ---
 command: gosouth
 patterns:
     template: gosouth
 action:
-    script: Quest.GoDirection("south");
+    script: questkit.GoDirection("south");
 
 ---
 command: goeast
 patterns:
     template: goeast
 action:
-    script: Quest.GoDirection("east");
+    script: questkit.GoDirection("east");
 
 ---
 command: gowest
 patterns:
     template: gowest
 action:
-    script: Quest.GoDirection("west");
+    script: questkit.GoDirection("west");
 
 ---
 command: gonortheast
 patterns:
     template: gonortheast
 action:
-    script: Quest.GoDirection("northeast");
+    script: questkit.GoDirection("northeast");
 
 ---
 command: gosoutheast
 patterns:
     template: gosoutheast
 action:
-    script: Quest.GoDirection("southeast");
+    script: questkit.GoDirection("southeast");
 
 ---
 command: gosouthwest
 patterns:
     template: gosouthwest
 action:
-    script: Quest.GoDirection("southwest");
+    script: questkit.GoDirection("southwest");
 
 ---
 command: gonorthwest
 patterns:
     template: gonorthwest
 action:
-    script: Quest.GoDirection("northwest");
+    script: questkit.GoDirection("northwest");
 
 ---
 command: goin
 patterns:
     template: goin
 action:
-    script: Quest.GoDirection("in");
+    script: questkit.GoDirection("in");
 
 ---
 command: goout
 patterns:
     template: goout
 action:
-    script: Quest.GoDirection("out");
+    script: questkit.GoDirection("out");
 
 ---
 command: goup
 patterns:
     template: goup
 action:
-    script: Quest.GoDirection("up");
+    script: questkit.GoDirection("up");
 
 ---
 command: godown
 patterns:
     template: godown
 action:
-    script: Quest.GoDirection("down");
+    script: questkit.GoDirection("down");
