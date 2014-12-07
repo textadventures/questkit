@@ -1,6 +1,9 @@
-if (typeof questkit === 'undefined') questkit = {};
+var questkit = {};
+questkit.ui = {};
 
 (function () {
+	'use strict';
+
 	var world = {
 		attributes: {}
 	};

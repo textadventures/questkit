@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 
 var questKitVersion = '0.0.1';
 
@@ -228,6 +229,7 @@ function Compiler() {
             }
             var variablesRegex = /\#(.*?)\#/g;
             var groups = [];
+            var match;
             while (!!(match = variablesRegex.exec(section.patterns[0]))) {
                 groups.push(match[1]);
             }

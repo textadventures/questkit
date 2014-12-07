@@ -1,7 +1,6 @@
-if (typeof questkit === 'undefined') questkit = {};
-if (typeof questkit.ui === 'undefined') questkit.ui = {};
-
 (function () {
+	'use strict';
+	
 	questkit.ui.addText = function (text) {
 		$('#questkit-output').append(text + '<br/>');
 	};
