@@ -1,4 +1,4 @@
-if (typeof questkit === "undefined") questkit = {};
+if (typeof questkit === 'undefined') questkit = {};
 
 (function () {
 	var world = {
@@ -15,7 +15,7 @@ if (typeof questkit === "undefined") questkit = {};
 	};
 
 	var povParent = function () {
-		return get(get("pov"), "parent");
+		return get(get('pov'), 'parent');
 	};
 
 	questkit.handleCommand = function (input) {
@@ -28,7 +28,7 @@ if (typeof questkit === "undefined") questkit = {};
 					args.shift();
 					var resolved = true;
 					world.regexes[cmd].groups.forEach(function (group, index) {
-						if (group.indexOf("object") != 0) return;
+						if (group.indexOf('object') != 0) return;
 						// Resolve object name
 
 						var check = args[index].toLowerCase();
@@ -49,10 +49,10 @@ if (typeof questkit === "undefined") questkit = {};
 						} 
 					});
 					if (resolved) {
-						world.scripts[cmd + ".action"].apply(this, args);
+						world.scripts[cmd + '.action'].apply(this, args);
 					}
 					else {
-						msg(questkit.template("UnresolvedObject"));
+						msg(questkit.template('UnresolvedObject'));
 					}
 				}
 			});
@@ -63,7 +63,7 @@ if (typeof questkit === "undefined") questkit = {};
 		var result = [];
 		var currentPovParent = povParent();
 		world.commands.forEach(function (cmd) {
-			var parent = get(cmd, "parent");
+			var parent = get(cmd, 'parent');
 			if (!parent || parent == currentPovParent) {
 				result.push(cmd);
 			}
@@ -81,7 +81,7 @@ if (typeof questkit === "undefined") questkit = {};
 
 	questkit.scopeReachableNotHeldForLocation = function (location) {
 		var result = [];
-		var pov = get("pov");
+		var pov = get('pov');
 		questkit.getAllChildObjects(location).forEach(function (object) {
 			if (questkit.containsReachable(location, object) && object != pov && !questkit.contains(pov, object)) {
 				result.push(object);
@@ -94,7 +94,7 @@ if (typeof questkit === "undefined") questkit = {};
 		// TODO: Cache direct children of each object
 		var result = [];
 		world.objects.forEach(function (child) {
-			if (get(child, "parent") == object) {
+			if (get(child, 'parent') == object) {
 				result.push(child);
 				result = result.concat(questkit.getAllChildObjects(child));
 			}
@@ -111,10 +111,10 @@ if (typeof questkit === "undefined") questkit = {};
 	};
 
 	var containsAccessible = function (parent, search, onlyReachable) {
-		var searchParent = get(search, "parent");
+		var searchParent = get(search, 'parent');
 		if (!searchParent) return false;
-		if (get(search, "visible") == false) return false;
-		if (get(parent, "darklevel") && !get(search, "lightsource")) return false;
+		if (get(search, 'visible') == false) return false;
+		if (get(parent, 'darklevel') && !get(search, 'lightsource')) return false;
 		if (searchParent == parent) return true;
 		
 		var canAdd;
@@ -133,15 +133,15 @@ if (typeof questkit === "undefined") questkit = {};
 	};
 
 	questkit.canSeeThrough = function (object) {
-		return (get(object, "transparent") || questkit.canReachThrough(object)) && !get(object, "hidechildren");
+		return (get(object, 'transparent') || questkit.canReachThrough(object)) && !get(object, 'hidechildren');
 	};
 
 	questkit.canReachThrough = function (object) {
-		return get(object, "isopen") && !get(object, "hidechildren");
+		return get(object, 'isopen') && !get(object, 'hidechildren');
 	};
 
 	questkit.contains = function (parent, search) {
-		var searchParent = get(search, "parent");
+		var searchParent = get(search, 'parent');
 		if (!searchParent) return false;
 		if (searchParent == parent) return true;
 		return questkit.contains(parent, searchParent);
@@ -154,7 +154,7 @@ if (typeof questkit === "undefined") questkit = {};
 
 	questkit.scopeInventory = function () {
 		var result = [];
-		var pov = get("pov");
+		var pov = get('pov');
 		questkit.getAllChildObjects(pov).forEach(function (object) {
 			if (questkit.containsVisible(pov, object)) {
 				result.push(object);
@@ -167,18 +167,18 @@ if (typeof questkit === "undefined") questkit = {};
 		// TODO: Locked exits, exits with scripts, non-directional exits
 		var foundExit;
 		questkit.scopeExits().forEach(function (exit) {
-			if (get(exit, "direction") == direction) {
+			if (get(exit, 'direction') == direction) {
 				foundExit = exit;
 				return;
 			}
 		});
 
 		if (!foundExit) {
-			msg(questkit.template("UnresolvedLocation"));
+			msg(questkit.template('UnresolvedLocation'));
 			return;
 		}
 
-		set(get("pov"), "parent", get(foundExit, "to"));		
+		set(get('pov'), 'parent', get(foundExit, 'to'));		
 	};
 
 	questkit.scopeExits = function () {
@@ -188,9 +188,9 @@ if (typeof questkit === "undefined") questkit = {};
 	questkit.scopeExitsForLocation = function (location) {
 		var result = [];
 		world.exits.forEach(function (exit) {
-			if (get(exit, "parent") != location) return;
-			if (get(exit, "visible") == false) return;
-			if (get(location, "darklevel") && !get(exit, "lightsource")) return;
+			if (get(exit, 'parent') != location) return;
+			if (get(exit, 'visible') == false) return;
+			if (get(location, 'darklevel') && !get(exit, 'lightsource')) return;
 		  	result.push(exit);
 		});
 		return result;
@@ -205,7 +205,7 @@ if (typeof questkit === "undefined") questkit = {};
 	questkit.get = function (arg1, arg2) {
 		var attribute = arg1;
 		if (arg2) {
-			attribute = arg1 + "." + arg2;
+			attribute = arg1 + '.' + arg2;
 		}
 		return world.attributes[attribute];
 	}
@@ -214,7 +214,7 @@ if (typeof questkit === "undefined") questkit = {};
 		var attribute = arg1;
 		var value = arg2;
 		if (arg3) {
-			attribute = arg1 + "." + arg2;
+			attribute = arg1 + '.' + arg2;
 			value = arg3;
 		}
 		world.attributes[attribute] = value;
@@ -223,7 +223,7 @@ if (typeof questkit === "undefined") questkit = {};
 	questkit.getscript = function (arg1, arg2) {
 		var attribute = arg1;
 		if (arg2) {
-			attribute = arg1 + "." + arg2;
+			attribute = arg1 + '.' + arg2;
 		}
 		return world.scripts[attribute];
 	};

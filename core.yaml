@@ -4,18 +4,18 @@ patterns:
 action:
     script: |
         var found = false;
-        var text = get(object, "look");
+        var text = get(object, 'look');
         if (text) {
             msg(text);
             found = true;
         }
-        var script = getscript(object, "look");
+        var script = getscript(object, 'look');
         if (script) {
             script();
             found = true;
         }
         if (!found) {
-            msg(questkit.template("DefaultObjectDescription"));
+            msg(questkit.template('DefaultObjectDescription'));
         }
 
 ---
@@ -23,81 +23,81 @@ command: gonorth
 patterns:
     template: gonorth
 action:
-    script: questkit.goDirection("north");
+    script: questkit.goDirection('north');
 
 ---
 command: gosouth
 patterns:
     template: gosouth
 action:
-    script: questkit.goDirection("south");
+    script: questkit.goDirection('south');
 
 ---
 command: goeast
 patterns:
     template: goeast
 action:
-    script: questkit.goDirection("east");
+    script: questkit.goDirection('east');
 
 ---
 command: gowest
 patterns:
     template: gowest
 action:
-    script: questkit.goDirection("west");
+    script: questkit.goDirection('west');
 
 ---
 command: gonortheast
 patterns:
     template: gonortheast
 action:
-    script: questkit.goDirection("northeast");
+    script: questkit.goDirection('northeast');
 
 ---
 command: gosoutheast
 patterns:
     template: gosoutheast
 action:
-    script: questkit.goDirection("southeast");
+    script: questkit.goDirection('southeast');
 
 ---
 command: gosouthwest
 patterns:
     template: gosouthwest
 action:
-    script: questkit.goDirection("southwest");
+    script: questkit.goDirection('southwest');
 
 ---
 command: gonorthwest
 patterns:
     template: gonorthwest
 action:
-    script: questkit.goDirection("northwest");
+    script: questkit.goDirection('northwest');
 
 ---
 command: goin
 patterns:
     template: goin
 action:
-    script: questkit.goDirection("in");
+    script: questkit.goDirection('in');
 
 ---
 command: goout
 patterns:
     template: goout
 action:
-    script: questkit.goDirection("out");
+    script: questkit.goDirection('out');
 
 ---
 command: goup
 patterns:
     template: goup
 action:
-    script: questkit.goDirection("up");
+    script: questkit.goDirection('up');
 
 ---
 command: godown
 patterns:
     template: godown
 action:
-    script: questkit.goDirection("down");
+    script: questkit.goDirection('down');

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-var questKitVersion = "0.0.1";
+var questKitVersion = '0.0.1';
 
-var path = require("path");
-var fs = require("fs");
-var yaml = require("js-yaml");
+var path = require('path');
+var fs = require('fs');
+var yaml = require('js-yaml');
 
 String.prototype.format = function () {
     var args = arguments;
@@ -22,28 +22,28 @@ function Compiler() {
     this.process = function (inputFilename, sourcePath, options) {
         var outputPath = path.resolve(path.dirname(inputFilename));
 
-        this.language = yaml.safeLoad(fs.readFileSync(path.join(sourcePath, "en.yaml")));
+        this.language = yaml.safeLoad(fs.readFileSync(path.join(sourcePath, 'en.yaml')));
 
         var sections = [];
 
         this.processFile(sections, path.resolve(inputFilename), true);
-        this.processFile(sections, this.findFile("core.yaml", outputPath, sourcePath), false);
+        this.processFile(sections, this.findFile('core.yaml', outputPath, sourcePath), false);
 
-        console.log("Loaded {0} sections".format(sections.length));
-        console.log("Writing story.js");
+        console.log('Loaded {0} sections'.format(sections.length));
+        console.log('Writing story.js');
 
-        var coreJsFile = fs.readFileSync(path.join(sourcePath, "core.js"));
-        var uiJsFile = fs.readFileSync(path.join(sourcePath, "ui.js"));
-        var jsData = "// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n".format(questKitVersion) + coreJsFile.toString() + "\n" + uiJsFile.toString();
+        var coreJsFile = fs.readFileSync(path.join(sourcePath, 'core.js'));
+        var uiJsFile = fs.readFileSync(path.join(sourcePath, 'ui.js'));
+        var jsData = '// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n'.format(questKitVersion) + coreJsFile.toString() + '\n' + uiJsFile.toString();
 
         var outputJsFile = [];
         outputJsFile.push(jsData);
-        outputJsFile.push("\n\n");
+        outputJsFile.push('\n\n');
 
         var game = sections.shift();
 
         if (!game.pov) {
-            game.pov = "player";
+            game.pov = 'player';
 
             // If a player object doesn't exist already, create it in the first location
 
@@ -51,69 +51,69 @@ function Compiler() {
             var firstLocation;
 
             sections.forEach(function (section) {
-                if (section["~name"] == "player") {
+                if (section['~name'] == 'player') {
                     foundPlayer = true;
                     return;
                 }
 
-                if (!firstLocation && section["~type"] == "location") {
-                    firstLocation = section["~name"];
+                if (!firstLocation && section['~type'] == 'location') {
+                    firstLocation = section['~name'];
                 }
             });
 
             if (!foundPlayer) {
                 sections.push({
-                    "~name": "player",
-                    "~type": "object",
+                    '~name': 'player',
+                    '~type': 'object',
                     parent: firstLocation
                 });
             }
         }
 
         Object.keys(game).forEach(function (attr) {
-            outputJsFile.push("set(\"{0}\", {1});\n".format(attr, JSON.stringify(game[attr])));
+            outputJsFile.push('set(\'{0}\', {1});\n'.format(attr, JSON.stringify(game[attr])));
         });
 
         sections.forEach(function (section) {
-            outputJsFile.push("\n");
+            outputJsFile.push('\n');
             this.writeSection(outputJsFile, section);
         }, this);
 
-        outputJsFile.push("\n");
-        outputJsFile.push("initData.templates = " + JSON.stringify(this.language.defaults, null, "\t") + ";\n");
-        outputJsFile.push("questkit.init(initData);\n");
+        outputJsFile.push('\n');
+        outputJsFile.push('initData.templates = ' + JSON.stringify(this.language.defaults, null, '\t') + ';\n');
+        outputJsFile.push('questkit.init(initData);\n');
 
-        fs.writeFileSync(path.join(outputPath, "story.js"), outputJsFile.join(""));
+        fs.writeFileSync(path.join(outputPath, 'story.js'), outputJsFile.join(''));
 
-        console.log("Writing index.html");
+        console.log('Writing index.html');
 
-        var htmlTemplateFile = fs.readFileSync(this.findFile("index.template.html", outputPath, sourcePath));
+        var htmlTemplateFile = fs.readFileSync(this.findFile('index.template.html', outputPath, sourcePath));
         var htmlData = htmlTemplateFile.toString();
-        htmlData = htmlData.replace("<!-- INFO -->", "<!--\n\nCreated with QuestKit {0}\n\n\nhttps://github.com/textadventures/questkit\n\n-->".format(questKitVersion));
+        htmlData = htmlData.replace('<!-- INFO -->', '<!--\n\nCreated with QuestKit {0}\n\n\nhttps://github.com/textadventures/questkit\n\n-->'.format(questKitVersion));
         htmlData = htmlData.replace(/<!-- TITLE -->/g, game.title);           
-        fs.writeFileSync(path.join(outputPath, "index.html"), htmlData);
+        fs.writeFileSync(path.join(outputPath, 'index.html'), htmlData);
 
-        console.log("Copying jquery");
-        fs.createReadStream(path.join(sourcePath, "node_modules", "jquery", "dist", "jquery.min.js")).pipe(fs.createWriteStream(path.join(outputPath, "jquery.min.js")));
+        console.log('Copying jquery');
+        fs.createReadStream(path.join(sourcePath, 'node_modules', 'jquery', 'dist', 'jquery.min.js')).pipe(fs.createWriteStream(path.join(outputPath, 'jquery.min.js')));
 
-        console.log("Copying bootstrap");
-        fs.createReadStream(path.join(sourcePath, "node_modules", "bootstrap", "dist", "css", "bootstrap.min.css")).pipe(fs.createWriteStream(path.join(outputPath, "bootstrap.min.css")));
-        fs.createReadStream(path.join(sourcePath, "node_modules", "bootstrap", "dist", "js", "bootstrap.min.js")).pipe(fs.createWriteStream(path.join(outputPath, "bootstrap.min.js")));
+        console.log('Copying bootstrap');
+        fs.createReadStream(path.join(sourcePath, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css')).pipe(fs.createWriteStream(path.join(outputPath, 'bootstrap.min.css')));
+        fs.createReadStream(path.join(sourcePath, 'node_modules', 'bootstrap', 'dist', 'js', 'bootstrap.min.js')).pipe(fs.createWriteStream(path.join(outputPath, 'bootstrap.min.js')));
 
-        console.log("Writing style.css");
+        console.log('Writing style.css');
 
-        var cssTemplateFile = fs.readFileSync(this.findFile("style.template.css", outputPath, sourcePath));
+        var cssTemplateFile = fs.readFileSync(this.findFile('style.template.css', outputPath, sourcePath));
         var cssData = cssTemplateFile.toString();
-        fs.writeFileSync(path.join(outputPath, "style.css"), cssData);
+        fs.writeFileSync(path.join(outputPath, 'style.css'), cssData);
 
-        console.log("Done.");
+        console.log('Done.');
 
         return outputPath;
     };
 
     this.processFile = function (sections, inputFilename, isFirst) {
         var compiler = this;
-        var file = fs.readFileSync(inputFilename, "utf8");
+        var file = fs.readFileSync(inputFilename, 'utf8');
 
         var defaultParent;
         var count = 0;
@@ -121,7 +121,7 @@ function Compiler() {
         var docs = yaml.safeLoadAll(file, function (section) {
             sections.push(section);
 
-            // If any attribute has a sub-attribute "template", replace it with the value from the loaded language file
+            // If any attribute has a sub-attribute 'template', replace it with the value from the loaded language file
 
             Object.keys(section).forEach(function (attr) {
                 if (section[attr] && section[attr].template) {
@@ -136,13 +136,13 @@ function Compiler() {
 
             var type = Object.keys(section)[0];
             if (!(type in compiler.sectionTypes)) {
-                throw "Unknown type - {0}: {1}".format(type, section[type]);
+                throw 'Unknown type - {0}: {1}'.format(type, section[type]);
             }
             
             var name = section[type];
-            if (!name) name = "~" + compiler.anonymousCount++;
+            if (!name) name = '~' + compiler.anonymousCount++;
 
-            if (type == "location") {
+            if (type == 'location') {
                 // set default parent to this for subsequent objects, exits etc.
                 defaultParent = name;
 
@@ -152,8 +152,8 @@ function Compiler() {
 
                     // create the exit
                     sections.push({
-                        "~name": "~" + compiler.anonymousCount++,
-                        "~type": "exit",
+                        '~name': '~' + compiler.anonymousCount++,
+                        '~type': 'exit',
                         parent: name,
                         direction: direction,
                         to: section[direction]
@@ -161,8 +161,8 @@ function Compiler() {
 
                     // and the exit in the opposite direction
                     sections.push({
-                        "~name": "~" + compiler.anonymousCount++,
-                        "~type": "exit",
+                        '~name': '~' + compiler.anonymousCount++,
+                        '~type': 'exit',
                         parent: section[direction],
                         direction: compiler.directions[direction],
                         to: name
@@ -175,8 +175,8 @@ function Compiler() {
                 if (defaultParent && !section.parent) section.parent = defaultParent;
             }
 
-            section["~type"] = type;
-            section["~name"] = name;
+            section['~type'] = type;
+            section['~name'] = name;
         });
     };
 
@@ -191,38 +191,38 @@ function Compiler() {
     // section types and the _internal list they live in
 
     this.sectionTypes = {
-        "command": "commands",
-        "location": "objects",
-        "object": "objects",
-        "character": "objects",
-        "exit": "exits",
+        'command': 'commands',
+        'location': 'objects',
+        'object': 'objects',
+        'character': 'objects',
+        'exit': 'exits',
     };
 
     // directions and their opposites
 
     this.directions = {
-        "north": "south",
-        "east": "west",
-        "south": "north",
-        "west": "east",
-        "northeast": "southwest",
-        "southeast": "northwest",
-        "southwest": "northeast",
-        "northwest": "southeast",
-        "up": "down",
-        "down": "up",
-        "in": "out",
-        "out": "in",
+        'north': 'south',
+        'east': 'west',
+        'south': 'north',
+        'west': 'east',
+        'northeast': 'southwest',
+        'southeast': 'northwest',
+        'southwest': 'northeast',
+        'northwest': 'southeast',
+        'up': 'down',
+        'down': 'up',
+        'in': 'out',
+        'out': 'in',
     }
 
     this.anonymousCount = 0;
 
     this.writeSection = function (outputJsFile, section) {
-        var type = section["~type"];
-        var name = section["~name"];
-        outputJsFile.push("initData.{0}.push(\"{1}\");\n".format(this.sectionTypes[type], name));
+        var type = section['~type'];
+        var name = section['~name'];
+        outputJsFile.push('initData.{0}.push(\'{1}\');\n'.format(this.sectionTypes[type], name));
 
-        if (type == "command") {
+        if (type == 'command') {
             var patterns = [];
             if (!section.patterns) section.patterns = [];
             if (section.pattern) {
@@ -235,24 +235,24 @@ function Compiler() {
                 groups.push(match[1]);
             }
             section.patterns.forEach(function (pattern) {
-                pattern = pattern.replace(/\(/g, "\\(");
-                pattern = pattern.replace(/\)/g, "\\)");
-                pattern = pattern.replace(/\./g, "\\.");
-                pattern = pattern.replace(/\?/g, "\\?");
-                pattern = pattern.replace(variablesRegex, "(.*?)");
-                patterns.push("/^" + pattern + "$/");
+                pattern = pattern.replace(/\(/g, '\\(');
+                pattern = pattern.replace(/\)/g, '\\)');
+                pattern = pattern.replace(/\./g, '\\.');
+                pattern = pattern.replace(/\?/g, '\\?');
+                pattern = pattern.replace(variablesRegex, '(.*?)');
+                patterns.push('/^' + pattern + '$/');
             });
             delete section.patterns;
 
-            outputJsFile.push("initData.regexes[\"{0}\"] = {\n".format(name));
-            outputJsFile.push("\tpatterns: [{0}],\n".format(patterns.join(", ")));
-            outputJsFile.push("\tgroups: {0}\n".format(JSON.stringify(groups)));
-            outputJsFile.push("};\n");
+            outputJsFile.push('initData.regexes[\'{0}\'] = {\n'.format(name));
+            outputJsFile.push('\tpatterns: [{0}],\n'.format(patterns.join(', ')));
+            outputJsFile.push('\tgroups: {0}\n'.format(JSON.stringify(groups)));
+            outputJsFile.push('};\n');
 
             if (section.action && section.action.script) {
-                outputJsFile.push("initData.scripts[\"{0}.action\"] = function ({1}) {\n".format(name, groups.join(", ")));
+                outputJsFile.push('initData.scripts[\'{0}.action\'] = function ({1}) {\n'.format(name, groups.join(', ')));
                 this.writeJs(outputJsFile, 1, section.action.script);
-                outputJsFile.push("};\n");
+                outputJsFile.push('};\n');
 
                 delete section.action;
             }
@@ -261,31 +261,31 @@ function Compiler() {
         var attrs = Object.keys(section).slice(0);
         attrs.shift();
         attrs.forEach(function (attr) {
-            if (attr.indexOf("~") == 0) return;
+            if (attr.indexOf('~') == 0) return;
             if (section[attr].script) {
-                outputJsFile.push("initData.scripts[\"{0}.{1}\"] = function () {\n".format(name, attr));
+                outputJsFile.push('initData.scripts[\'{0}.{1}\'] = function () {\n'.format(name, attr));
                 this.writeJs(outputJsFile, 1, section[attr].script);
-                outputJsFile.push("};\n");
+                outputJsFile.push('};\n');
             }
             else {
-                outputJsFile.push("set(\"{0}.{1}\", {2});\n".format(name, attr, JSON.stringify(section[attr])));
+                outputJsFile.push('set(\'{0}.{1}\', {2});\n'.format(name, attr, JSON.stringify(section[attr])));
             }
         }, this);
     };
 
     this.writeJs = function (outputJsFile, tabCount, js) {
-        var tabs = new Array(tabCount).join("\t");
-        var lines = js.trim().replace(/\r/g, "").split("\n");
+        var tabs = new Array(tabCount).join('\t');
+        var lines = js.trim().replace(/\r/g, '').split('\n');
         lines.forEach(function (jsLine) {
-            outputJsFile.push("{0}\t{1}\n".format(tabs, jsLine));
+            outputJsFile.push('{0}\t{1}\n'.format(tabs, jsLine));
         });
     };
 }
 
-console.log("QuestKit " + questKitVersion);
+console.log('QuestKit ' + questKitVersion);
 
-var argv = require("yargs")
-    .usage("Compiles a QuestKit script file into HTML and JavaScript.\nFor help, see http://docs.textadventures.co.uk/questkit/\nUsage: $0 filename.yaml [options]")
+var argv = require('yargs')
+    .usage('Compiles a QuestKit script file into HTML and JavaScript.\nFor help, see http://docs.textadventures.co.uk/questkit/\nUsage: $0 filename.yaml [options]')
     .demand(1)
     .argv;
 
