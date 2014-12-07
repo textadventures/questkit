@@ -32,8 +32,9 @@ function Compiler() {
         console.log("Loaded {0} sections".format(sections.length));
         console.log("Writing story.js");
 
-        var jsTemplateFile = fs.readFileSync(path.join(sourcePath, "questkit.template.js"));
-        var jsData = "// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n".format(questKitVersion) + jsTemplateFile.toString();
+        var coreJsFile = fs.readFileSync(path.join(sourcePath, "core.js"));
+        var uiJsFile = fs.readFileSync(path.join(sourcePath, "ui.js"));
+        var jsData = "// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n".format(questKitVersion) + coreJsFile.toString() + "\n" + uiJsFile.toString();
 
         var outputJsFile = [];
         outputJsFile.push(jsData);
