@@ -31,6 +31,7 @@ div#questkit-header
 div#questkit-output
 {
     font-size: 18px;
+    margin-top: 60px;
 }
 hr {
     border: 0;
@@ -38,4 +39,9 @@ hr {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     margin-top: 16px; margin-bottom: 16px;
+}
+.navbar-inverse .navbar-brand:hover, 
+.navbar-inverse .navbar-brand:focus {
+    background-color: transparent;
+    color: #9d9d9d;
 }

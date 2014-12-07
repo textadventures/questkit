@@ -90,11 +90,15 @@ function Compiler() {
         var htmlTemplateFile = fs.readFileSync(this.findFile("index.template.html", outputPath, sourcePath));
         var htmlData = htmlTemplateFile.toString();
         htmlData = htmlData.replace("<!-- INFO -->", "<!--\n\nCreated with QuestKit {0}\n\n\nhttps://github.com/textadventures/questkit\n\n-->".format(questKitVersion));
-        htmlData = htmlData.replace("<!-- TITLE -->", game.title);
-
-        fs.createReadStream(path.join(sourcePath, "node_modules", "jquery", "dist", "jquery.min.js")).pipe(fs.createWriteStream(path.join(outputPath, "jquery.min.js")));
-                
+        htmlData = htmlData.replace(/<!-- TITLE -->/g, game.title);           
         fs.writeFileSync(path.join(outputPath, "index.html"), htmlData);
+
+        console.log("Copying jquery");
+        fs.createReadStream(path.join(sourcePath, "node_modules", "jquery", "dist", "jquery.min.js")).pipe(fs.createWriteStream(path.join(outputPath, "jquery.min.js")));
+
+        console.log("Copying bootstrap");
+        fs.createReadStream(path.join(sourcePath, "node_modules", "bootstrap", "dist", "css", "bootstrap.min.css")).pipe(fs.createWriteStream(path.join(outputPath, "bootstrap.min.css")));
+        fs.createReadStream(path.join(sourcePath, "node_modules", "bootstrap", "dist", "js", "bootstrap.min.js")).pipe(fs.createWriteStream(path.join(outputPath, "bootstrap.min.js")));
 
         console.log("Writing style.css");
 

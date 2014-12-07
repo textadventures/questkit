@@ -1,20 +1,35 @@
 <!DOCTYPE html>
 <html>
 <!-- INFO -->
-	<head>
-		<title><!-- TITLE --></title>
-		<script src="jquery.min.js"></script>
-		<script src="story.js"></script>
-		<link rel="stylesheet" href="style.css"/>
-	</head>
-	<body>
-		<div id="questkit-container">
-			<div id="questkit-header">
-				<a class="questkit-header-link" id="questkit-restart">Restart</a>
-			</div>
-			<div id="questkit-output">
-			</div>
-			<input id="questkit-input"/>
-		</div>
-	</body>
+  <head>
+    <title><!-- TITLE --></title>
+    <script src="jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="story.js"></script>
+    <link rel="stylesheet" href="bootstrap.min.css"/>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <span class="navbar-brand"><!-- TITLE --></span>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Restart</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="container">
+
+        <div id="questkit-output">
+        </div>
+
+        <div class="form-group">
+          <input id="questkit-input" class="form-control" placeholder="Type here..." />
+        </div>
+
+      </div>
+  </body>
 </html>
