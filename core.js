@@ -14,9 +14,9 @@ if (typeof Quest === "undefined") Quest = {};
 		world.templates = data.templates || {};
 	};
 
-	function povParent() {
+	var povParent = function () {
 		return get(get("pov"), "parent");
-	}
+	};
 
 	Quest.HandleCommand = function(input) {
 		// TODO: Full conversion
@@ -110,7 +110,7 @@ if (typeof Quest === "undefined") Quest = {};
 		return containsAccessible(parent, search, true);
 	};
 
-	function containsAccessible(parent, search, onlyReachable) {
+	var containsAccessible = function (parent, search, onlyReachable) {
 		var searchParent = get(search, "parent");
 		if (!searchParent) return false;
 		if (get(search, "visible") == false) return false;
@@ -130,7 +130,7 @@ if (typeof Quest === "undefined") Quest = {};
 		} else {
 			return false;
 		}
-	}
+	};
 
 	Quest.CanSeeThrough = function(object) {
 		return (get(object, "transparent") || Quest.CanReachThrough(object)) && !get(object, "hidechildren");
