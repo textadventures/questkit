@@ -1,9 +1,11 @@
 if (typeof Quest === "undefined") Quest = {};
 if (typeof Quest.UI === "undefined") Quest.UI = {};
 
-Quest.UI.addText = function(text) {
-	$("#questkit-output").append(text + "<br/>");
-}
+(function(){
+	Quest.UI.addText = function(text) {
+		$("#questkit-output").append(text + "<br/>");
+	}
+})();
 
 $(function() {
 	$("#questkit-input").keydown(function(e) {

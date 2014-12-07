@@ -1,4 +1,4 @@
-var Quest = {};
+if (typeof Quest === "undefined") Quest = {};
 
 (function () {
 	var world = {
