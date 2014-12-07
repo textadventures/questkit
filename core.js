@@ -1,17 +1,17 @@
 var Quest = {};
 
 (function () {
-	var _internal = {
+	var world = {
 		attributes: {}
 	};
 
 	Quest.Init = function(data) {
-		_internal.scripts = data.scripts || {};
-		_internal.objects = data.objects || [];
-		_internal.commands = data.commands || [];
-		_internal.exits = data.exits || [];
-		_internal.regexes = data.regexes || {};
-		_internal.templates = data.templates || {};
+		world.scripts = data.scripts || {};
+		world.objects = data.objects || [];
+		world.commands = data.commands || [];
+		world.exits = data.exits || [];
+		world.regexes = data.regexes || {};
+		world.templates = data.templates || {};
 	};
 
 	function povParent() {
@@ -21,13 +21,13 @@ var Quest = {};
 	Quest.HandleCommand = function(input) {
 		// TODO: Full conversion
 		Quest.ScopeCommands().forEach(function(cmd) {
-			_internal.regexes[cmd].patterns.forEach(function(pattern) {
+			world.regexes[cmd].patterns.forEach(function(pattern) {
 				var match = pattern.exec(input);
 				if (match) {
 					var args = match.slice(0);
 					args.shift();
 					var resolved = true;
-					_internal.regexes[cmd].groups.forEach(function(group, index) {
+					world.regexes[cmd].groups.forEach(function(group, index) {
 						if (group.indexOf("object") != 0) return;
 						// Resolve object name
 
@@ -49,7 +49,7 @@ var Quest = {};
 						} 
 					});
 					if (resolved) {
-						_internal.scripts[cmd + ".action"].apply(this, args);
+						world.scripts[cmd + ".action"].apply(this, args);
 					}
 					else {
 						msg(Quest.Template("UnresolvedObject"));
@@ -62,7 +62,7 @@ var Quest = {};
 	Quest.ScopeCommands = function() {
 		var result = [];
 		var currentPovParent = povParent();
-		_internal.commands.forEach(function(cmd) {
+		world.commands.forEach(function(cmd) {
 			var parent = get(cmd, "parent");
 			if (!parent || parent == currentPovParent) {
 				result.push(cmd);
@@ -93,7 +93,7 @@ var Quest = {};
 	Quest.GetAllChildObjects = function(object) {
 		// TODO: Cache direct children of each object
 		var result = [];
-		_internal.objects.forEach(function(child) {
+		world.objects.forEach(function(child) {
 			if (get(child, "parent") == object) {
 				result.push(child);
 				result = result.concat(Quest.GetAllChildObjects(child));
@@ -187,7 +187,7 @@ var Quest = {};
 
 	Quest.ScopeExitsForLocation = function(location) {
 		var result = [];
-		_internal.exits.forEach(function(exit) {
+		world.exits.forEach(function(exit) {
 			if (get(exit, "parent") != location) return;
 			if (get(exit, "visible") == false) return;
 			if (get(location, "darklevel") && !get(exit, "lightsource")) return;
@@ -197,7 +197,7 @@ var Quest = {};
 	};
 
 	Quest.Template = function(template) {
-		return _internal.templates[template];
+		return world.templates[template];
 	};
 
 	// Quest script commmands =====================================================
@@ -207,7 +207,7 @@ var Quest = {};
 		if (arg2) {
 			attribute = arg1 + "." + arg2;
 		}
-		return _internal.attributes[attribute];
+		return world.attributes[attribute];
 	}
 
 	Quest.set = function (arg1, arg2, arg3) {
@@ -217,7 +217,7 @@ var Quest = {};
 			attribute = arg1 + "." + arg2;
 			value = arg3;
 		}
-		_internal.attributes[attribute] = value;
+		world.attributes[attribute] = value;
 	};
 
 	Quest.getscript = function (arg1, arg2) {
@@ -225,7 +225,7 @@ var Quest = {};
 		if (arg2) {
 			attribute = arg1 + "." + arg2;
 		}
-		return _internal.scripts[attribute];
+		return world.scripts[attribute];
 	};
 
 	Quest.msg = function (text) {
