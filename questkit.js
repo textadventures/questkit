@@ -80,7 +80,8 @@ function Compiler() {
         }, this);
 
         outputJsFile.push("\n");
-        outputJsFile.push("Quest._internal.templates = " + JSON.stringify(this.language.defaults, null, "\t"));
+        outputJsFile.push("initData.templates = " + JSON.stringify(this.language.defaults, null, "\t") + ";\n");
+        outputJsFile.push("Quest.Init(initData);\n");
 
         fs.writeFileSync(path.join(outputPath, "story.js"), outputJsFile.join(""));
 
@@ -215,7 +216,7 @@ function Compiler() {
     this.writeSection = function(outputJsFile, section) {
         var type = section["~type"];
         var name = section["~name"];
-        outputJsFile.push("Quest._internal.{0}.push(\"{1}\");\n".format(this.sectionTypes[type], name));
+        outputJsFile.push("initData.{0}.push(\"{1}\");\n".format(this.sectionTypes[type], name));
 
         if (type == "command") {
             var patterns = [];
@@ -239,13 +240,13 @@ function Compiler() {
             });
             delete section.patterns;
 
-            outputJsFile.push("Quest._internal.regexes[\"{0}\"] = {\n".format(name));
+            outputJsFile.push("initData.regexes[\"{0}\"] = {\n".format(name));
             outputJsFile.push("\tpatterns: [{0}],\n".format(patterns.join(", ")));
             outputJsFile.push("\tgroups: {0}\n".format(JSON.stringify(groups)));
             outputJsFile.push("};\n");
 
             if (section.action && section.action.script) {
-                outputJsFile.push("Quest._internal.scripts[\"{0}.action\"] = function({1}) {\n".format(name, groups.join(", ")));
+                outputJsFile.push("initData.scripts[\"{0}.action\"] = function({1}) {\n".format(name, groups.join(", ")));
                 this.writeJs(outputJsFile, 1, section.action.script);
                 outputJsFile.push("};\n");
 
@@ -258,7 +259,7 @@ function Compiler() {
         attrs.forEach(function (attr) {
             if (attr.indexOf("~") == 0) return;
             if (section[attr].script) {
-                outputJsFile.push("Quest._internal.scripts[\"{0}.{1}\"] = function() {\n".format(name, attr));
+                outputJsFile.push("initData.scripts[\"{0}.{1}\"] = function() {\n".format(name, attr));
                 this.writeJs(outputJsFile, 1, section[attr].script);
                 outputJsFile.push("};\n");
             }
