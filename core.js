@@ -14,9 +14,9 @@ var Quest = {};
 		_internal.templates = data.templates || {};
 	};
 
-	Quest.PovParent = function() {
+	function povParent() {
 		return get(get("pov"), "parent");
-	};
+	}
 
 	Quest.HandleCommand = function(input) {
 		// TODO: Full conversion
@@ -61,10 +61,10 @@ var Quest = {};
 
 	Quest.ScopeCommands = function() {
 		var result = [];
-		var povParent = Quest.PovParent();
+		var currentPovParent = povParent();
 		_internal.commands.forEach(function(cmd) {
 			var parent = get(cmd, "parent");
-			if (!parent || parent == povParent) {
+			if (!parent || parent == currentPovParent) {
 				result.push(cmd);
 			}
 		});
@@ -76,7 +76,7 @@ var Quest = {};
 	};
 
 	Quest.ScopeVisibleNotHeld = function() {
-		return Quest.ScopeReachableNotHeldForLocation(Quest.PovParent()).concat(Quest.ScopeVisibleNotReachableForLocation(Quest.PovParent()));
+		return Quest.ScopeReachableNotHeldForLocation(povParent()).concat(Quest.ScopeVisibleNotReachableForLocation(povParent()));
 	};
 
 	Quest.ScopeReachableNotHeldForLocation = function(location) {
@@ -103,14 +103,14 @@ var Quest = {};
 	};
 
 	Quest.ContainsVisible = function(parent, search) {
-		return Quest.ContainsAccessible(parent, search, false);
+		return containsAccessible(parent, search, false);
 	};
 
 	Quest.ContainsReachable = function(parent, search) {
-		return Quest.ContainsAccessible(parent, search, true);
+		return containsAccessible(parent, search, true);
 	};
 
-	Quest.ContainsAccessible = function(parent, search, onlyReachable) {
+	function containsAccessible(parent, search, onlyReachable) {
 		var searchParent = get(search, "parent");
 		if (!searchParent) return false;
 		if (get(search, "visible") == false) return false;
@@ -130,7 +130,7 @@ var Quest = {};
 		} else {
 			return false;
 		}
-	};
+	}
 
 	Quest.CanSeeThrough = function(object) {
 		return (get(object, "transparent") || Quest.CanReachThrough(object)) && !get(object, "hidechildren");
@@ -182,7 +182,7 @@ var Quest = {};
 	};
 
 	Quest.ScopeExits = function() {
-		return Quest.ScopeExitsForLocation(Quest.PovParent());
+		return Quest.ScopeExitsForLocation(povParent());
 	};
 
 	Quest.ScopeExitsForLocation = function(location) {
