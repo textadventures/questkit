@@ -15,7 +15,7 @@ action:
             found = true;
         }
         if (!found) {
-            msg(questkit.Template("DefaultObjectDescription"));
+            msg(questkit.template("DefaultObjectDescription"));
         }
 
 ---
@@ -23,81 +23,81 @@ command: gonorth
 patterns:
     template: gonorth
 action:
-    script: questkit.GoDirection("north");
+    script: questkit.goDirection("north");
 
 ---
 command: gosouth
 patterns:
     template: gosouth
 action:
-    script: questkit.GoDirection("south");
+    script: questkit.goDirection("south");
 
 ---
 command: goeast
 patterns:
     template: goeast
 action:
-    script: questkit.GoDirection("east");
+    script: questkit.goDirection("east");
 
 ---
 command: gowest
 patterns:
     template: gowest
 action:
-    script: questkit.GoDirection("west");
+    script: questkit.goDirection("west");
 
 ---
 command: gonortheast
 patterns:
     template: gonortheast
 action:
-    script: questkit.GoDirection("northeast");
+    script: questkit.goDirection("northeast");
 
 ---
 command: gosoutheast
 patterns:
     template: gosoutheast
 action:
-    script: questkit.GoDirection("southeast");
+    script: questkit.goDirection("southeast");
 
 ---
 command: gosouthwest
 patterns:
     template: gosouthwest
 action:
-    script: questkit.GoDirection("southwest");
+    script: questkit.goDirection("southwest");
 
 ---
 command: gonorthwest
 patterns:
     template: gonorthwest
 action:
-    script: questkit.GoDirection("northwest");
+    script: questkit.goDirection("northwest");
 
 ---
 command: goin
 patterns:
     template: goin
 action:
-    script: questkit.GoDirection("in");
+    script: questkit.goDirection("in");
 
 ---
 command: goout
 patterns:
     template: goout
 action:
-    script: questkit.GoDirection("out");
+    script: questkit.goDirection("out");
 
 ---
 command: goup
 patterns:
     template: goup
 action:
-    script: questkit.GoDirection("up");
+    script: questkit.goDirection("up");
 
 ---
 command: godown
 patterns:
     template: godown
 action:
-    script: questkit.GoDirection("down");
+    script: questkit.goDirection("down");

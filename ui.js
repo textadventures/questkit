@@ -1,8 +1,8 @@
 if (typeof questkit === "undefined") questkit = {};
-if (typeof questkit.UI === "undefined") questkit.UI = {};
+if (typeof questkit.ui === "undefined") questkit.ui = {};
 
 (function(){
-	questkit.UI.addText = function(text) {
+	questkit.ui.addText = function(text) {
 		$("#questkit-output").append(text + "<br/>");
 	}
 })();
@@ -13,6 +13,6 @@ $(function() {
 		var input = $("#questkit-input").val();
 		$("#questkit-input").val("");
 		msg("<br/>&gt; " + input + "<br/>");
-		questkit.HandleCommand(input);
+		questkit.handleCommand(input);
 	});
 });

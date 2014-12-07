@@ -81,7 +81,7 @@ function Compiler() {
 
         outputJsFile.push("\n");
         outputJsFile.push("initData.templates = " + JSON.stringify(this.language.defaults, null, "\t") + ";\n");
-        outputJsFile.push("questkit.Init(initData);\n");
+        outputJsFile.push("questkit.init(initData);\n");
 
         fs.writeFileSync(path.join(outputPath, "story.js"), outputJsFile.join(""));
 
