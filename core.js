@@ -106,6 +106,11 @@ questkit.ui = {};
 			if (result.resolved) {
 				args[index] = result.value;
 			}
+			else if (result.pending) {
+				console.log("TODO: Disambiguation");
+				console.log(result.value);
+				return;
+			}
 			else {
 				if (world.regexes[command].groups.length > 1) {
 					// TODO: Add an UnresolvedObjectMulti template which we can pass unresolved object to
@@ -141,30 +146,40 @@ questkit.ui = {};
 		// TODO: lists (e.g. "take all")
 		// TODO: command metadata for non-disambiguating hyperlinks
 
+		var fullMatches = [];
+		var partialMatches = [];
+
 		var result;
 		var resolved = false;
+		var pending = false;
 		name = name.toLowerCase();
+		
 		scope.forEach(function (object) {
-			if (displayAlias(object).toLowerCase() === name) {
-				result = object;
-				resolved = true;
-				return;
-			}
+			compareNames(name, displayAlias(object).toLowerCase(), object, fullMatches, partialMatches);
 			var alt = get(object, 'alt');
 			if (alt) {
 				alt.forEach(function (altName) {
-					if (altName.toLowerCase() === name) {
-						result = object;
-						resolved = true;
-						return;
-					}
+					compareNames(name, altName.toLowerCase(), object, fullMatches, partialMatches);
 				});
 			}
-			if (resolved) return;
 		});
+
+		if (fullMatches.length === 1) {
+			resolved = true;
+			result = fullMatches[0];
+		}
+		else if (fullMatches.length === 0 && partialMatches.length === 1) {
+			resolved = true;
+			result = partialMatches[0];
+		}
+		else if (fullMatches.length > 0 || partialMatches.length > 0) {
+			pending = true;
+			result = fullMatches.concat(partialMatches);
+		}
 
 		return {
 			resolved: resolved,
+			pending: pending,
 			value: result
 		};
 	};
@@ -173,6 +188,24 @@ questkit.ui = {};
 		var alias = get(object, 'alias');
 		if (alias) return alias;
 		return object;
+	};
+
+	var compareNames = function (enteredName, nameCandidate, object, fullMatches, partialMatches) {
+		if (enteredName === nameCandidate) {
+			if (fullMatches.indexOf(object) === -1) {
+				fullMatches.push(object);
+			}
+			return;
+		}
+
+		// if any word of the name candidate starts with the entered name,
+		// add it as a partial match
+		if (nameCandidate.indexOf(enteredName) === 0 || nameCandidate.indexOf(' ' + enteredName) > -1) {
+			if (partialMatches.indexOf(object) === -1) {
+				partialMatches.push(object);
+			}
+			return;
+		}
 	};
 
 	questkit.scopeCommands = function () {
