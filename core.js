@@ -90,6 +90,7 @@ questkit.ui = {};
 	};
 
 	var resolveNextName = function () {
+		// TODO: These parameters should all be in one object, ~parserContext
 		var index = get('~nextArgIndex');
 		var command = get('~command');
 		var group = world.regexes[command].groups[index];
@@ -100,10 +101,10 @@ questkit.ui = {};
 		if (group.indexOf('object') === 0) {
 			// Resolve object name
 
-			var result = resolveName(args[index]);
+			var result = resolveName(args[index], questkit.scopeVisible());
 
-			if (result) {
-				args[index] = result;
+			if (result.resolved) {
+				args[index] = result.value;
 			}
 			else {
 				if (world.regexes[command].groups.length > 1) {
@@ -117,6 +118,14 @@ questkit.ui = {};
 			}
 		}
 
+		finishedResolvingName();
+	};
+
+	var finishedResolvingName = function () {
+		var index = get('~nextArgIndex');
+		var command = get('~command');
+		var args = get('~args');
+
 		index++;
 		if (index < world.regexes[command].groups.length) {
 			set('~nextArgIndex', index);
@@ -127,20 +136,27 @@ questkit.ui = {};
 		}
 	};
 
-	var resolveName = function (name) {
+	var resolveName = function (name, scope) {
 		// TODO: aliases
 		// TODO: disambiguation
 		// TODO: lists (e.g. "take all")
+		// TODO: command metadata for non-disambiguating hyperlinks
 
 		var result;
+		var resolved = false;
 		name = name.toLowerCase();
-		questkit.scopeVisible().forEach(function (object) {
+		scope.forEach(function (object) {
 			if (object.toLowerCase() === name) {
 				result = object;
+				resolved = true;
 				return;
 			}
 		});
-		return result;
+		
+		return {
+			resolved: resolved,
+			value: result
+		};
 	};
 
 	questkit.scopeCommands = function () {
