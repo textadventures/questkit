@@ -74,6 +74,13 @@
 	questkit.ui.markScrollPosition = function () {
 		beginningOfCurrentTurnScrollPosition = $('#questkit-output').height();
 	};
+
+	questkit.ui.escapeString = function (str) {
+		return str.replace(/&/g, '&amp;')
+			.replace(/"/g, '&quot;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;');
+	};
 })();
 
 $(function () {
@@ -82,7 +89,6 @@ $(function () {
 		var input = $('#questkit-input').val();
 		$('#questkit-input').val('');
 		questkit.ui.markScrollPosition();
-		msg('<br/>&gt; ' + input + '<br/>');
 		questkit.handleCommand(input);
 		questkit.ui.scrollToEnd();
 	});

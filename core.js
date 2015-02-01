@@ -23,6 +23,10 @@ questkit.ui = {};
 
 	questkit.handleCommand = function (input) {
 		// TODO: Full conversion
+
+		msg('');
+		msg(questkit.ui.escapeString('> ' + input));
+
 		questkit.scopeCommands().forEach(function (cmd) {
 			world.regexes[cmd].patterns.forEach(function (pattern) {
 				var match = pattern.exec(input);
