@@ -89,6 +89,8 @@ $(function () {
 		var input = $('#questkit-input').val();
 		$('#questkit-input').val('');
 		questkit.ui.markScrollPosition();
+		msg('');
+		msg(questkit.ui.escapeString('> ' + input));
 		questkit.handleCommand(input);
 		questkit.ui.scrollToEnd();
 	});

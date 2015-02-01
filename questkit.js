@@ -31,7 +31,7 @@ function Compiler() {
         console.log('Writing story.js');
 
         var coreJsFile = fs.readFileSync(path.join(sourcePath, 'core.js'));
-        var uiJsFile = fs.readFileSync(path.join(sourcePath, 'ui.js'));
+        var uiJsFile = fs.readFileSync(path.join(sourcePath, options.cli ? 'cli.js' : 'ui.js'));
         var jsData = '// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n'.format(questKitVersion) + coreJsFile.toString() + '\n' + uiJsFile.toString();
 
         var outputJsFile = [];
@@ -284,11 +284,15 @@ function Compiler() {
 console.log('QuestKit ' + questKitVersion);
 
 var argv = require('yargs')
-    .usage('Compiles a QuestKit script file into HTML and JavaScript.\nFor help, see http://docs.textadventures.co.uk/questkit/\nUsage: $0 filename.yaml [options]')
+    .usage('Compiles a QuestKit script file into HTML and JavaScript.\n' +
+        'For help, see http://docs.textadventures.co.uk/questkit/\n' +
+        'Usage: $0 filename.yaml [options]')
     .demand(1)
+    .describe("cli", "Generate command-line version")
     .argv;
 
 var options = {
+    cli: argv.cli
 };
 
 var compiler = new Compiler();
