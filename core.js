@@ -124,7 +124,7 @@ questkit.ui = {};
 		}
 
 		index++;
-		if (index >= world.regexes[command].length) {
+		if (index < world.regexes[command].groups.length) {
 			set('~nextArgIndex', index);
 			resolveNextName();
 		}
