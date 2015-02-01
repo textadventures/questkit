@@ -69,6 +69,10 @@ questkit.ui = {};
 		if (maxStrength > -1) {
 			handleCommandPattern(command, bestMatch);
 		}
+		else {
+			// TODO: Use game.unresolvedcommandhandler if it exists?
+			msg(questkit.template('UnrecognisedCommand'));
+		}
 	};
 
 	var handleCommandPattern = function (command, match) {
