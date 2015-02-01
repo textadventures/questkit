@@ -76,18 +76,16 @@ questkit.ui = {};
 	};
 
 	var handleCommandPattern = function (command, match) {
-		var args = match.slice(0);
-		args.shift();
-
-		set('~command', command);
-		set('~args', args);
-		set('~nextArgIndex', 0);
-
 		if (world.regexes[command].groups.length > 0) {
+			var args = match.slice(0);
+			args.shift();
+			set('~command', command);
+			set('~args', args);
+			set('~nextArgIndex', 0);
 			resolveNextName();
 		}
 		else {
-			world.scripts[command + '.action'].apply(this, args);
+			world.scripts[command + '.action']();
 		}
 	};
 
@@ -107,6 +105,7 @@ questkit.ui = {};
 				if (object.toLowerCase() == check) {
 					args[index] = object;
 					found = true;
+					return;
 				}
 			});
 			// TODO: Handle aliases, disambiguation etc...
