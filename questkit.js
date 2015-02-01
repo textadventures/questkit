@@ -83,26 +83,28 @@ function Compiler() {
 
         fs.writeFileSync(path.join(outputPath, 'story.js'), outputJsFile.join(''));
 
-        console.log('Writing index.html');
+        if (!options.cli) {
+            console.log('Writing index.html');
 
-        var htmlTemplateFile = fs.readFileSync(this.findFile('index.template.html', outputPath, sourcePath));
-        var htmlData = htmlTemplateFile.toString();
-        htmlData = htmlData.replace('<!-- INFO -->', '<!--\n\nCreated with QuestKit {0}\n\n\nhttps://github.com/textadventures/questkit\n\n-->'.format(questKitVersion));
-        htmlData = htmlData.replace(/<!-- TITLE -->/g, game.title);           
-        fs.writeFileSync(path.join(outputPath, 'index.html'), htmlData);
+            var htmlTemplateFile = fs.readFileSync(this.findFile('index.template.html', outputPath, sourcePath));
+            var htmlData = htmlTemplateFile.toString();
+            htmlData = htmlData.replace('<!-- INFO -->', '<!--\n\nCreated with QuestKit {0}\n\n\nhttps://github.com/textadventures/questkit\n\n-->'.format(questKitVersion));
+            htmlData = htmlData.replace(/<!-- TITLE -->/g, game.title);           
+            fs.writeFileSync(path.join(outputPath, 'index.html'), htmlData);
 
-        console.log('Copying jquery');
-        fs.createReadStream(path.join(sourcePath, 'node_modules', 'jquery', 'dist', 'jquery.min.js')).pipe(fs.createWriteStream(path.join(outputPath, 'jquery.min.js')));
+            console.log('Copying jquery');
+            fs.createReadStream(path.join(sourcePath, 'node_modules', 'jquery', 'dist', 'jquery.min.js')).pipe(fs.createWriteStream(path.join(outputPath, 'jquery.min.js')));
 
-        console.log('Copying bootstrap');
-        fs.createReadStream(path.join(sourcePath, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css')).pipe(fs.createWriteStream(path.join(outputPath, 'bootstrap.min.css')));
-        fs.createReadStream(path.join(sourcePath, 'node_modules', 'bootstrap', 'dist', 'js', 'bootstrap.min.js')).pipe(fs.createWriteStream(path.join(outputPath, 'bootstrap.min.js')));
+            console.log('Copying bootstrap');
+            fs.createReadStream(path.join(sourcePath, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css')).pipe(fs.createWriteStream(path.join(outputPath, 'bootstrap.min.css')));
+            fs.createReadStream(path.join(sourcePath, 'node_modules', 'bootstrap', 'dist', 'js', 'bootstrap.min.js')).pipe(fs.createWriteStream(path.join(outputPath, 'bootstrap.min.js')));
 
-        console.log('Writing style.css');
+            console.log('Writing style.css');
 
-        var cssTemplateFile = fs.readFileSync(this.findFile('style.template.css', outputPath, sourcePath));
-        var cssData = cssTemplateFile.toString();
-        fs.writeFileSync(path.join(outputPath, 'style.css'), cssData);
+            var cssTemplateFile = fs.readFileSync(this.findFile('style.template.css', outputPath, sourcePath));
+            var cssData = cssTemplateFile.toString();
+            fs.writeFileSync(path.join(outputPath, 'style.css'), cssData);
+        }
 
         console.log('Done.');
 
