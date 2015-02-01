@@ -79,9 +79,12 @@ questkit.ui = {};
 		if (world.regexes[command].groups.length > 0) {
 			var args = match.slice(0);
 			args.shift();
-			set('~command', command);
-			set('~args', args);
-			set('~nextArgIndex', 0);
+			var parserContext = {
+				command: command,
+				args: args,
+				nextArgIndex: 0
+			};
+			set('~parserContext', parserContext);
 			resolveNextName();
 		}
 		else {
@@ -90,11 +93,11 @@ questkit.ui = {};
 	};
 
 	var resolveNextName = function () {
-		// TODO: These parameters should all be in one object, ~parserContext
-		var index = get('~nextArgIndex');
-		var command = get('~command');
+		var parserContext = get('~parserContext');
+		var index = parserContext.nextArgIndex;
+		var command = parserContext.command;
 		var group = world.regexes[command].groups[index];
-		var args = get('~args');
+		var args = parserContext.args;
 
 		// TODO: resolve exits
 
@@ -127,13 +130,13 @@ questkit.ui = {};
 	};
 
 	var finishedResolvingName = function () {
-		var index = get('~nextArgIndex');
-		var command = get('~command');
-		var args = get('~args');
+		var parserContext = get('~parserContext');
+		var command = parserContext.command;
+		var args = parserContext.args;
 
-		index++;
-		if (index < world.regexes[command].groups.length) {
-			set('~nextArgIndex', index);
+		parserContext.nextArgIndex++;
+		if (parserContext.nextArgIndex < world.regexes[command].groups.length) {
+			set('~parserContext', parserContext);
 			resolveNextName();
 		}
 		else {
