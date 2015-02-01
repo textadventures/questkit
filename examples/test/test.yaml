@@ -65,6 +65,11 @@ alias: lamp
 look: Just a lamp.
 
 ---
+object: obj02
+alias: double bass
+look: Who knows why this musical instrument is here?
+
+---
 object: defibrillator
 look: A heart defibrillator can magically revive a dead person, if all those hospital dramas are to be believed.
 take: true

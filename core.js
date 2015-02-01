@@ -42,6 +42,14 @@ questkit.ui = {};
 	questkit.handleCommand = function (input) {
 		// TODO: Full conversion
 
+		var parserContext = get('~parserContext');
+		if (parserContext) {
+			if (parserContext.options && !isNaN(input)) {
+				finishDisambiguation(input);
+				return;
+			}
+		}
+
 		var bestMatch;
 		var command;
 		var maxStrength = -1;
@@ -110,11 +118,11 @@ questkit.ui = {};
 				args[index] = result.value;
 			}
 			else if (result.pending) {
-				console.log("TODO: Disambiguation");
-				console.log(result.value);
+				startDisambiguation(args[index], result.value);
 				return;
 			}
 			else {
+				set('~parserContext', null);
 				if (world.regexes[command].groups.length > 1) {
 					// TODO: Add an UnresolvedObjectMulti template which we can pass unresolved object to
 					msg(questkit.template('UnresolvedObject') + ' ("' + args[index] + '")');
@@ -140,12 +148,12 @@ questkit.ui = {};
 			resolveNextName();
 		}
 		else {
+			set('~parserContext', null);
 			world.scripts[command + '.action'].apply(this, args);
 		}
 	};
 
 	var resolveName = function (name, scope) {
-		// TODO: disambiguation
 		// TODO: lists (e.g. "take all")
 		// TODO: command metadata for non-disambiguating hyperlinks
 
@@ -209,6 +217,27 @@ questkit.ui = {};
 			}
 			return;
 		}
+	};
+
+	var startDisambiguation = function (name, options) {
+		var parserContext = get('~parserContext');
+		parserContext.options = options;
+		set('~parserContext', parserContext);
+
+		// TODO: Show name in template
+		msg(questkit.template('DisambiguateMenu'));
+		msg('');
+		options.forEach(function (option, index) {
+			msg(index + ': ' + displayAlias(option));
+		});
+	};
+
+	var finishDisambiguation = function (index) {
+		var parserContext = get('~parserContext');
+		parserContext.args[parserContext.nextArgIndex] = parserContext.options[index];
+		parserContext.options = null;
+		set('~parserContext', parserContext);
+		finishedResolvingName();
 	};
 
 	questkit.scopeCommands = function () {
