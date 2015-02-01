@@ -30,6 +30,7 @@ questkit.ui = {};
 					var args = match.slice(0);
 					args.shift();
 					var resolved = true;
+					var unresolvedObject;
 					world.regexes[cmd].groups.forEach(function (group, index) {
 						if (group.indexOf('object') !== 0) return;
 						// Resolve object name
@@ -48,6 +49,7 @@ questkit.ui = {};
 
 						if (!found) {
 							resolved = false;
+							unresolvedObject = args[index];
 							return;
 						} 
 					});
@@ -55,7 +57,13 @@ questkit.ui = {};
 						world.scripts[cmd + '.action'].apply(this, args);
 					}
 					else {
-						msg(questkit.template('UnresolvedObject'));
+						if (world.regexes[cmd].groups.length > 1) {
+							// TODO: Add an UnresolvedObjectMulti template which we can pass unresolvedObject to
+							msg(questkit.template('UnresolvedObject') + ' ("' + unresolvedObject + '")');
+						}
+						else {
+							msg(questkit.template('UnresolvedObject'));
+						}
 					}
 				}
 			});

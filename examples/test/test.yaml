@@ -7,6 +7,14 @@ action:
     script: msg ("You say '" + text + "', but nobody replies.");
 
 ---
+command:
+pattern: "test #object1# and #object2#"
+action:
+    script: |
+        msg ("Object1: " + object1);
+        msg ("Object2: " + object2);
+
+---
 location: lounge
 description: This is quite a plain lounge with an old beige carpet and peeling wallpaper.
 south: kitchen
