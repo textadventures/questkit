@@ -137,7 +137,6 @@ questkit.ui = {};
 	};
 
 	var resolveName = function (name, scope) {
-		// TODO: alt names
 		// TODO: disambiguation
 		// TODO: lists (e.g. "take all")
 		// TODO: command metadata for non-disambiguating hyperlinks
@@ -151,6 +150,17 @@ questkit.ui = {};
 				resolved = true;
 				return;
 			}
+			var alt = get(object, 'alt');
+			if (alt) {
+				alt.forEach(function (altName) {
+					if (altName.toLowerCase() === name) {
+						result = object;
+						resolved = true;
+						return;
+					}
+				});
+			}
+			if (resolved) return;
 		});
 
 		return {
