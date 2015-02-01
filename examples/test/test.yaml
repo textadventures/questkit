@@ -60,6 +60,11 @@ take: true
 takemsg: You fold the newspaper and place it neatly under your arm.
 
 ---
+object: obj01
+alias: lamp
+look: Just a lamp.
+
+---
 object: defibrillator
 look: A heart defibrillator can magically revive a dead person, if all those hospital dramas are to be believed.
 take: true

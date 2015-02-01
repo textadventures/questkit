@@ -137,7 +137,7 @@ questkit.ui = {};
 	};
 
 	var resolveName = function (name, scope) {
-		// TODO: aliases
+		// TODO: alt names
 		// TODO: disambiguation
 		// TODO: lists (e.g. "take all")
 		// TODO: command metadata for non-disambiguating hyperlinks
@@ -146,17 +146,23 @@ questkit.ui = {};
 		var resolved = false;
 		name = name.toLowerCase();
 		scope.forEach(function (object) {
-			if (object.toLowerCase() === name) {
+			if (displayAlias(object).toLowerCase() === name) {
 				result = object;
 				resolved = true;
 				return;
 			}
 		});
-		
+
 		return {
 			resolved: resolved,
 			value: result
 		};
+	};
+
+	var displayAlias = function (object) {
+		var alias = get(object, 'alias');
+		if (alias) return alias;
+		return object;
 	};
 
 	questkit.scopeCommands = function () {
