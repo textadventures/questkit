@@ -297,3 +297,11 @@ var options = {
 
 var compiler = new Compiler();
 var result = compiler.process(argv._[0], __dirname, options);
+
+if (result && options.cli) {
+    var output = path.join(result, 'story.js');
+    console.log('\nRunning ' + output);
+    console.log('Type "q" to exit\n');
+    var child = require('child_process');
+    child.fork(output);
+}
