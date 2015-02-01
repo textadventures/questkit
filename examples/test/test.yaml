@@ -18,6 +18,13 @@ action:
 location: lounge
 description: This is quite a plain lounge with an old beige carpet and peeling wallpaper.
 south: kitchen
+north: xoverride
+
+---
+command:
+pattern: "x test"
+action:
+    script: msg ("Success");
 
 ---
 object: TV
@@ -93,3 +100,16 @@ prefix: some
 object: beer
 parent: fridge
 prefix: some
+
+---
+location: xoverride
+description: Test overriding the "look" command.
+
+---
+command:
+pattern: "x #object#"
+action:
+    script: msg ("x (object) is overridden here. Object " + object);
+
+---
+object: thing

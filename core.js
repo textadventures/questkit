@@ -21,53 +21,89 @@ questkit.ui = {};
 		return get(get('pov'), 'parent');
 	};
 
+	// The idea of getMatchStrength is that you have a regex like
+	//          look at (.*)
+	// And you have a string like
+	//          look at thing
+	// The strength is the length of the "fixed" bit of the string, in this case "look at ".
+	// So we calculate this as the length of the input string, minus the length of the
+	// text that matches the groups.
+	
+	var getMatchStrength = function (regex, input) {
+		var lengthOfTextMatchedByGroups = 0;
+		var matches = regex.exec(input);
+		matches.shift();
+		matches.forEach(function (group) {
+			lengthOfTextMatchedByGroups += group.length;
+		});
+		return input.length - lengthOfTextMatchedByGroups;
+	}
+
 	questkit.handleCommand = function (input) {
 		// TODO: Full conversion
+
+		var bestMatch;
+		var command;
+		var maxStrength = -1;
+
 		questkit.scopeCommands().forEach(function (cmd) {
 			world.regexes[cmd].patterns.forEach(function (pattern) {
 				var match = pattern.exec(input);
 				if (match) {
-					var args = match.slice(0);
-					args.shift();
-					var resolved = true;
-					var unresolvedObject;
-					world.regexes[cmd].groups.forEach(function (group, index) {
-						if (group.indexOf('object') !== 0) return;
-						// Resolve object name
+					var matchStrength = getMatchStrength(pattern, input);
+					
+					// Core library commands are defined after game commands, so strength
+					// has to be greater for a command to "win". An exception is if the current
+					// winner has no parent, and the candidate does - a locally defined command
+					// beats a global command.
 
-						var check = args[index].toLowerCase();
-						var found = false;
-
-						questkit.scopeVisible().forEach(function (object) {
-							if (object.toLowerCase() == check) {
-								args[index] = object;
-								found = true;
-								return;
-							}
-						});
-						// TODO: Handle aliases, disambiguation etc...
-
-						if (!found) {
-							resolved = false;
-							unresolvedObject = args[index];
-							return;
-						} 
-					});
-					if (resolved) {
-						world.scripts[cmd + '.action'].apply(this, args);
-					}
-					else {
-						if (world.regexes[cmd].groups.length > 1) {
-							// TODO: Add an UnresolvedObjectMulti template which we can pass unresolvedObject to
-							msg(questkit.template('UnresolvedObject') + ' ("' + unresolvedObject + '")');
-						}
-						else {
-							msg(questkit.template('UnresolvedObject'));
-						}
+					if (matchStrength > maxStrength || (command && !get(command, "parent") && get(cmd, "parent"))) {
+						maxStrength = matchStrength;
+						command = cmd;
+						bestMatch = match;
 					}
 				}
 			});
 		});
+
+		var args = bestMatch.slice(0);
+		args.shift();
+		var resolved = true;
+		var unresolvedObject;
+		world.regexes[command].groups.forEach(function (group, index) {
+			if (group.indexOf('object') !== 0) return;
+			// Resolve object name
+
+			var check = args[index].toLowerCase();
+			var found = false;
+
+			questkit.scopeVisible().forEach(function (object) {
+				if (object.toLowerCase() == check) {
+					args[index] = object;
+					found = true;
+					return;
+				}
+			});
+			// TODO: Handle aliases, disambiguation etc...
+
+			if (!found) {
+				resolved = false;
+				unresolvedObject = args[index];
+				return;
+			} 
+		});
+		if (resolved) {
+			world.scripts[command + '.action'].apply(this, args);
+		}
+		else {
+			if (world.regexes[command].groups.length > 1) {
+				// TODO: Add an UnresolvedObjectMulti template which we can pass unresolvedObject to
+				msg(questkit.template('UnresolvedObject') + ' ("' + unresolvedObject + '")');
+			}
+			else {
+				msg(questkit.template('UnresolvedObject'));
+			}
+		}
 	};
 
 	questkit.scopeCommands = function () {
@@ -202,7 +238,7 @@ questkit.ui = {};
 			if (get(exit, 'parent') != location) return;
 			if (get(exit, 'visible') === false) return;
 			if (get(location, 'darklevel') && !get(exit, 'lightsource')) return;
-		  	result.push(exit);
+			result.push(exit);
 		});
 		return result;
 	};
