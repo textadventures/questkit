@@ -95,22 +95,17 @@ questkit.ui = {};
 		var group = world.regexes[command].groups[index];
 		var args = get('~args');
 
+		// TODO: resolve exits
+
 		if (group.indexOf('object') === 0) {
 			// Resolve object name
 
-			var check = args[index].toLowerCase();
-			var found = false;
+			var result = resolveName(args[index]);
 
-			questkit.scopeVisible().forEach(function (object) {
-				if (object.toLowerCase() == check) {
-					args[index] = object;
-					found = true;
-					return;
-				}
-			});
-			// TODO: Handle aliases, disambiguation etc...
-
-			if (!found) {
+			if (result) {
+				args[index] = result;
+			}
+			else {
 				if (world.regexes[command].groups.length > 1) {
 					// TODO: Add an UnresolvedObjectMulti template which we can pass unresolved object to
 					msg(questkit.template('UnresolvedObject') + ' ("' + args[index] + '")');
@@ -130,6 +125,22 @@ questkit.ui = {};
 		else {
 			world.scripts[command + '.action'].apply(this, args);
 		}
+	};
+
+	var resolveName = function (name) {
+		// TODO: aliases
+		// TODO: disambiguation
+		// TODO: lists (e.g. "take all")
+
+		var result;
+		name = name.toLowerCase();
+		questkit.scopeVisible().forEach(function (object) {
+			if (object.toLowerCase() === name) {
+				result = object;
+				return;
+			}
+		});
+		return result;
 	};
 
 	questkit.scopeCommands = function () {
