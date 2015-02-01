@@ -66,12 +66,34 @@ questkit.ui = {};
 			});
 		});
 
-		var args = bestMatch.slice(0);
+		if (maxStrength > -1) {
+			handleCommandPattern(command, bestMatch);
+		}
+	};
+
+	var handleCommandPattern = function (command, match) {
+		var args = match.slice(0);
 		args.shift();
-		var resolved = true;
-		var unresolvedObject;
-		world.regexes[command].groups.forEach(function (group, index) {
-			if (group.indexOf('object') !== 0) return;
+
+		set('~command', command);
+		set('~args', args);
+		set('~nextArgIndex', 0);
+
+		if (world.regexes[command].groups.length > 0) {
+			resolveNextName();
+		}
+		else {
+			world.scripts[command + '.action'].apply(this, args);
+		}
+	};
+
+	var resolveNextName = function () {
+		var index = get('~nextArgIndex');
+		var command = get('~command');
+		var group = world.regexes[command].groups[index];
+		var args = get('~args');
+
+		if (group.indexOf('object') === 0) {
 			// Resolve object name
 
 			var check = args[index].toLowerCase();
@@ -81,28 +103,29 @@ questkit.ui = {};
 				if (object.toLowerCase() == check) {
 					args[index] = object;
 					found = true;
-					return;
 				}
 			});
 			// TODO: Handle aliases, disambiguation etc...
 
 			if (!found) {
-				resolved = false;
-				unresolvedObject = args[index];
+				if (world.regexes[command].groups.length > 1) {
+					// TODO: Add an UnresolvedObjectMulti template which we can pass unresolved object to
+					msg(questkit.template('UnresolvedObject') + ' ("' + args[index] + '")');
+				}
+				else {
+					msg(questkit.template('UnresolvedObject'));
+				}
 				return;
-			} 
-		});
-		if (resolved) {
-			world.scripts[command + '.action'].apply(this, args);
+			}
+		}
+
+		index++;
+		if (index >= world.regexes[command].length) {
+			set('~nextArgIndex', index);
+			resolveNextName();
 		}
 		else {
-			if (world.regexes[command].groups.length > 1) {
-				// TODO: Add an UnresolvedObjectMulti template which we can pass unresolvedObject to
-				msg(questkit.template('UnresolvedObject') + ' ("' + unresolvedObject + '")');
-			}
-			else {
-				msg(questkit.template('UnresolvedObject'));
-			}
+			world.scripts[command + '.action'].apply(this, args);
 		}
 	};
 
