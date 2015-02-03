@@ -136,6 +136,11 @@ to: shed
 location: shed
 
 ---
+exit:
+direction: out
+to: garden
+
+---
 walkthrough: test
 steps:
     - x tv
