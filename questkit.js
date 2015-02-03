@@ -33,6 +33,7 @@ function Compiler() {
         var coreJsFiles = [
             'core.js',
             'core.scopes.js',
+            'core.parser.js',
         ];
 
         var coreJs = coreJsFiles.map(function (file) {
