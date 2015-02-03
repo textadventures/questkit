@@ -81,6 +81,9 @@
 			.replace(/</g, '&lt;')
 			.replace(/>/g, '&gt;');
 	};
+
+	questkit.ui.init = function () {
+	};
 })();
 
 $(function () {

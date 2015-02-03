@@ -23,6 +23,9 @@ String.prototype.format = function () {
 		world.regexes = data.regexes || {};
 		world.templates = data.templates || {};
 		world.walkthroughs = data.walkthroughs || {};
+
+		questkit.startLocation();
+		questkit.ui.init();
 	};
 
 	questkit.povParent = function () {
@@ -70,12 +73,12 @@ String.prototype.format = function () {
 			return;
 		}
 
-		set(get('pov'), 'parent', get(foundExit, 'to'));
+		questkit.goToExit(foundExit);
 	};
 
 	questkit.goToExit = function (exit) {
 		// TODO: Locked exits, exits with scripts
-		set(get('pov'), 'parent', get(exit, 'to'));
+		questkit.go(get(exit, 'to'));
 	};
 
 	questkit.template = function (template) {
