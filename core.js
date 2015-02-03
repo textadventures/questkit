@@ -56,7 +56,7 @@ String.prototype.format = function () {
 	};
 
 	questkit.goDirection = function (direction) {
-		// TODO: Locked exits, exits with scripts, non-directional exits
+		// TODO: Locked exits, exits with scripts
 		var foundExit;
 		questkit.scopeExits().forEach(function (exit) {
 			if (get(exit, 'direction') == direction) {
@@ -70,7 +70,12 @@ String.prototype.format = function () {
 			return;
 		}
 
-		set(get('pov'), 'parent', get(foundExit, 'to'));		
+		set(get('pov'), 'parent', get(foundExit, 'to'));
+	};
+
+	questkit.goToExit = function (exit) {
+		// TODO: Locked exits, exits with scripts
+		set(get('pov'), 'parent', get(exit, 'to'));
 	};
 
 	questkit.template = function (template) {

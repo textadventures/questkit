@@ -181,7 +181,12 @@ function Compiler() {
                     delete section[direction];
                 });
             }
-            else {
+
+            if (type == 'exit') {
+                if (!section.alias) section.alias = section.to;
+            }
+
+            if (type !== 'location' && type != 'walkthrough') {
                 if (defaultParent && !section.parent && type != 'walkthrough') section.parent = defaultParent;
             }
 

@@ -94,6 +94,9 @@
 		if (group.indexOf('object') === 0) {
 			resolveScope = questkit.scopeVisible();
 		}
+		else if (group.indexOf('exit') === 0) {
+			resolveScope = questkit.scopeExits();
+		}
 		else if (group.indexOf('walkthrough') === 0) {
 			resolveScope = questkit.allWalkthroughs();
 		}

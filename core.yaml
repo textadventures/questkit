@@ -103,6 +103,13 @@ action:
     script: questkit.goDirection('down');
 
 ---
+command: goto
+patterns:
+    template: goto
+action:
+    script: questkit.goToExit(exit)
+
+---
 command: walkthrough
 patterns:
     template: walkthrough

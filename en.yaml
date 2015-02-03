@@ -59,6 +59,9 @@ godown:
     - go down
     - down
     - d
+goto:
+    - "go #exit#"
+    - "go to #exit#"
 
 # Debugging only
 walkthrough:
