@@ -42,10 +42,6 @@ questkit.ui = {};
 		return world.regexes[command];
 	};
 
-	questkit.script = function (script) {
-		return world.scripts[script];
-	};
-
 	questkit.displayAlias = function (object) {
 		var alias = get(object, 'alias');
 		if (alias) return alias;
