@@ -66,7 +66,7 @@ String.prototype.format = function () {
 		});
 
 		if (!foundExit) {
-			msg(questkit.template('UnresolvedLocation'));
+			msg(questkit.template('UnresolvedDirection'));
 			return;
 		}
 

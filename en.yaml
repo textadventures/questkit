@@ -72,9 +72,12 @@ listwalkthroughs:
 # Default text
 
 defaults:
-    UnresolvedObject: I can't see that.
-    UnresolvedLocation: You can't go there.
-    DefaultObjectDescription: Nothing out of the ordinary.
-    UnrecognisedCommand: I don't understand your command.
-    DisambiguateMenu: 'Please choose which "{0}" you mean'
     ChooseWalkthrough: Choose a walkthrough
+    DefaultObjectDescription: Nothing out of the ordinary.
+    DisambiguateMenu: 'Please choose which "{0}" you mean'
+    UnrecognisedCommand: I don't understand your command.
+    UnresolvedDirection: You can't go there.
+    UnresolvedExit: I can't see that.
+    UnresolvedObject: I can't see that.
+    UnresolvedObjectMulti: "I can't see that ({0})."
+    UnresolvedWalkthrough: No walkthrough of that name.

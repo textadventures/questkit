@@ -90,15 +90,19 @@
 		// TODO: resolve exits
 
 		var resolveScope = null;
+		var unresolvedTemplate = null;
 
 		if (group.indexOf('object') === 0) {
 			resolveScope = questkit.scopeVisible();
+			unresolvedTemplate = 'UnresolvedObject';
 		}
 		else if (group.indexOf('exit') === 0) {
 			resolveScope = questkit.scopeExits();
+			unresolvedTemplate = 'UnresolvedExit';
 		}
 		else if (group.indexOf('walkthrough') === 0) {
 			resolveScope = questkit.allWalkthroughs();
+			unresolvedTemplate = 'UnresolvedWalkthrough';
 		}
 
 		if (resolveScope) {
@@ -117,11 +121,10 @@
 				set('~parserContext', null);
 				if (questkit.commandRegex(command).groups.length > 1) {
 					// TODO: Unresolved template will depend on the scope we're searching
-					// TODO: Add an UnresolvedObjectMulti template which we can pass unresolved object to
-					msg(questkit.template('UnresolvedObject') + ' ("' + args[index] + '")');
+					msg(questkit.template('UnresolvedObjectMulti').format(args[index]));
 				}
 				else {
-					msg(questkit.template('UnresolvedObject'));
+					msg(questkit.template(unresolvedTemplate));
 				}
 				return;
 			}
