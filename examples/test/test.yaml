@@ -132,3 +132,10 @@ steps:
     - s
     - x eggs
     - weigh eggs
+
+---
+walkthrough: test 2
+steps:
+    - test bob and lamp
+    - x b
+    - 1

@@ -401,6 +401,16 @@ questkit.ui = {};
 		});
 	};
 
+	questkit.listWalkthroughs = function () {
+		var parserContext = {
+			command: 'walkthrough',
+			args: [],
+			nextArgIndex: 0,
+		};
+		set('~parserContext', parserContext);
+		startDisambiguation(null, world.walkthroughs);
+	};
+
 	// questkit script commmands =====================================================
 
 	questkit.get = function (arg1, arg2) {

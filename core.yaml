@@ -108,3 +108,10 @@ patterns:
     template: walkthrough
 action:
     script: questkit.runWalkthrough(walkthrough);
+
+---
+command: listwalkthroughs
+patterns:
+    template: listwalkthroughs
+action:
+    script: questkit.listWalkthroughs();

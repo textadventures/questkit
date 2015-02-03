@@ -63,6 +63,8 @@ godown:
 # Debugging only
 walkthrough:
     - "run #walkthrough#"
+listwalkthroughs:
+    - run
 
 # Default text
 
