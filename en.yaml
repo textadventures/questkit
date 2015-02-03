@@ -73,4 +73,5 @@ defaults:
     UnresolvedLocation: You can't go there.
     DefaultObjectDescription: Nothing out of the ordinary.
     UnrecognisedCommand: I don't understand your command.
-    DisambiguateMenu: "Please choose which {text} you mean:"
+    DisambiguateMenu: 'Please choose which "{0}" you mean'
+    ChooseWalkthrough: Choose a walkthrough

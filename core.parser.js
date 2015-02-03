@@ -203,13 +203,17 @@
 		}
 	};
 
-	var startDisambiguation = function (name, options) {
+	var startDisambiguation = function (name, options, prompt) {
 		var parserContext = get('~parserContext');
 		parserContext.options = options;
 		set('~parserContext', parserContext);
 
-		// TODO: Show name in template
-		msg(questkit.template('DisambiguateMenu'));
+		if (prompt) {
+			msg(prompt + ':');
+		}
+		else {
+			msg(questkit.template('DisambiguateMenu').format(name) + ':');
+		}
 		msg('');
 		options.forEach(function (option, index) {
 			msg((index + 1) + ': ' + questkit.displayAlias(option));
@@ -240,6 +244,6 @@
 			nextArgIndex: 0,
 		};
 		set('~parserContext', parserContext);
-		startDisambiguation(null, questkit.allWalkthroughs());
+		startDisambiguation(null, questkit.allWalkthroughs(), questkit.template('ChooseWalkthrough'));
 	};
 })();
