@@ -20,8 +20,6 @@
 	}
 
 	questkit.handleCommand = function (input) {
-		// TODO: Full conversion
-
 		var parserContext = get('~parserContext');
 		if (parserContext) {
 			if (parserContext.options && !isNaN(input) && input > 0 && input <= parserContext.options.length) {
@@ -87,8 +85,6 @@
 		var group = questkit.commandRegex(command).groups[index];
 		var args = parserContext.args;
 
-		// TODO: resolve exits
-
 		var resolveScope = null;
 		var unresolvedTemplate = null;
 
@@ -106,8 +102,6 @@
 		}
 
 		if (resolveScope) {
-			// Resolve object name
-
 			var result = resolveName(args[index], resolveScope);
 
 			if (result.resolved) {
@@ -120,7 +114,6 @@
 			else {
 				set('~parserContext', null);
 				if (questkit.commandRegex(command).groups.length > 1) {
-					// TODO: Unresolved template will depend on the scope we're searching
 					msg(questkit.template('UnresolvedObjectMulti').format(args[index]));
 				}
 				else {
