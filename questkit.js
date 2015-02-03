@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* jshint quotmark: single */
+
 'use strict';
 
 var questKitVersion = '0.0.1';
@@ -307,7 +309,7 @@ var argv = require('yargs')
         'For help, see http://docs.textadventures.co.uk/questkit/\n' +
         'Usage: $0 filename.yaml [options]')
     .demand(1)
-    .describe("cli", "Generate command-line version")
+    .describe('cli', 'Generate command-line version')
     .argv;
 
 var options = {

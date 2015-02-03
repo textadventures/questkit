@@ -1,3 +1,5 @@
+/* jshint quotmark: single */
+
 (function () {
 	'use strict';
 
@@ -17,7 +19,7 @@
 			lengthOfTextMatchedByGroups += group.length;
 		});
 		return input.length - lengthOfTextMatchedByGroups;
-	}
+	};
 
 	questkit.handleCommand = function (input) {
 		var parserContext = get('~parserContext');
@@ -43,7 +45,7 @@
 					// winner has no parent, and the candidate does - a locally defined command
 					// beats a global command.
 
-					if (matchStrength > maxStrength || (command && !get(command, "parent") && get(cmd, "parent"))) {
+					if (matchStrength > maxStrength || (command && !get(command, 'parent') && get(cmd, 'parent'))) {
 						maxStrength = matchStrength;
 						command = cmd;
 						bestMatch = match;

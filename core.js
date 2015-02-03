@@ -1,3 +1,5 @@
+/* jshint quotmark: single */
+
 var questkit = {};
 questkit.ui = {};
 
@@ -42,7 +44,7 @@ String.prototype.format = function () {
 
 	questkit.allExits = function () {
 		return world.exits;
-	}
+	};
 
 	questkit.allWalkthroughs = function () {
 		return world.walkthroughs;
