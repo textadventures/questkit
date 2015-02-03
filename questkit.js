@@ -172,7 +172,7 @@ function Compiler() {
                 });
             }
             else {
-                if (defaultParent && !section.parent) section.parent = defaultParent;
+                if (defaultParent && !section.parent && type != 'walkthrough') section.parent = defaultParent;
             }
 
             section['~type'] = type;
@@ -188,7 +188,7 @@ function Compiler() {
         return path.join(sourcePath, filename);
     };
 
-    // section types and the _internal list they live in
+    // section types and the initData list they live in
 
     this.sectionTypes = {
         'command': 'commands',
@@ -196,6 +196,7 @@ function Compiler() {
         'object': 'objects',
         'character': 'objects',
         'exit': 'exits',
+        'walkthrough': 'walkthroughs',
     };
 
     // directions and their opposites

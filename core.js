@@ -15,6 +15,7 @@ questkit.ui = {};
 		world.exits = data.exits || [];
 		world.regexes = data.regexes || {};
 		world.templates = data.templates || {};
+		world.walkthroughs = data.walkthroughs || {};
 	};
 
 	var povParent = function () {
@@ -109,10 +110,19 @@ questkit.ui = {};
 
 		// TODO: resolve exits
 
+		var resolveScope = null;
+
 		if (group.indexOf('object') === 0) {
+			resolveScope = questkit.scopeVisible();
+		}
+		else if (group.indexOf('walkthrough') === 0) {
+			resolveScope = world.walkthroughs;
+		}
+
+		if (resolveScope) {
 			// Resolve object name
 
-			var result = resolveName(args[index], questkit.scopeVisible());
+			var result = resolveName(args[index], resolveScope);
 
 			if (result.resolved) {
 				args[index] = result.value;
@@ -124,6 +134,7 @@ questkit.ui = {};
 			else {
 				set('~parserContext', null);
 				if (world.regexes[command].groups.length > 1) {
+					// TODO: Unresolved template will depend on the scope we're searching
 					// TODO: Add an UnresolvedObjectMulti template which we can pass unresolved object to
 					msg(questkit.template('UnresolvedObject') + ' ("' + args[index] + '")');
 				}
@@ -381,6 +392,15 @@ questkit.ui = {};
 		return world.templates[template];
 	};
 
+	questkit.runWalkthrough = function (walkthrough) {
+		var steps = get(walkthrough, 'steps');
+		steps.forEach(function (step) {
+			msg('');
+			msg('* ' + step);
+			questkit.handleCommand(step);
+		});
+	};
+
 	// questkit script commmands =====================================================
 
 	questkit.get = function (arg1, arg2) {
@@ -426,4 +446,5 @@ var initData = {
 	commands: [],
 	exits: [],
 	regexes: {},
+	walkthroughs: [],
 };

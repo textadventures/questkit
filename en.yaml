@@ -60,6 +60,10 @@ godown:
     - down
     - d
 
+# Debugging only
+walkthrough:
+    - "run #walkthrough#"
+
 # Default text
 
 defaults:

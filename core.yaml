@@ -101,3 +101,10 @@ patterns:
     template: godown
 action:
     script: questkit.goDirection('down');
+
+---
+command: walkthrough
+patterns:
+    template: walkthrough
+action:
+    script: questkit.runWalkthrough(walkthrough);
