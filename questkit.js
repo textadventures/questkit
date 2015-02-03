@@ -30,9 +30,18 @@ function Compiler() {
         console.log('Loaded {0} sections'.format(sections.length));
         console.log('Writing story.js');
 
+        var coreJsFiles = [
+            'core.js',
+            'core.scopes.js',
+        ];
+
+        var coreJs = coreJsFiles.map(function (file) {
+            return fs.readFileSync(path.join(sourcePath, file)).toString();
+        }).join('');
+
         var coreJsFile = fs.readFileSync(path.join(sourcePath, 'core.js'));
         var uiJsFile = fs.readFileSync(path.join(sourcePath, options.cli ? 'cli.js' : 'ui.js'));
-        var jsData = '// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n'.format(questKitVersion) + coreJsFile.toString() + '\n' + uiJsFile.toString();
+        var jsData = '// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n'.format(questKitVersion) + coreJs + '\n' + uiJsFile.toString();
 
         var outputJsFile = [];
         outputJsFile.push(jsData);
