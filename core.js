@@ -45,7 +45,7 @@ questkit.ui = {};
 
 		var parserContext = get('~parserContext');
 		if (parserContext) {
-			if (parserContext.options && !isNaN(input)) {
+			if (parserContext.options && !isNaN(input) && input > 0 && input <= parserContext.options.length) {
 				finishDisambiguation(input);
 				return;
 			}
@@ -239,13 +239,13 @@ questkit.ui = {};
 		msg(questkit.template('DisambiguateMenu'));
 		msg('');
 		options.forEach(function (option, index) {
-			msg(index + ': ' + displayAlias(option));
+			msg((index + 1) + ': ' + displayAlias(option));
 		});
 	};
 
 	var finishDisambiguation = function (index) {
 		var parserContext = get('~parserContext');
-		parserContext.args[parserContext.nextArgIndex] = parserContext.options[index];
+		parserContext.args[parserContext.nextArgIndex] = parserContext.options[index - 1];
 		parserContext.options = null;
 		set('~parserContext', parserContext);
 		finishedResolvingName();
