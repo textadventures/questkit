@@ -33,9 +33,8 @@
 	var formatObjectList = function (preList, parent, preFinal, postList) {
 		var result = [];
 
-		// TODO: Remove scenery objects
-
-		var list = questkit.getDirectChildren(parent);
+		var list = removeSceneryObjects(questkit.getDirectChildren(parent));
+		
 		list.forEach(function (item, index) {
 			if (result.length === 0) result.push(preList, ' ');
 			result.push(questkit.displayName(item));
@@ -52,6 +51,13 @@
 		});
 
 		return result.join('');
+	};
+
+	var removeSceneryObjects = function (list) {
+		var pov = get('pov');
+		return list.filter(function (item) {
+			return !get(item, 'scenery') && item !== pov;
+		});
 	};
 
 	questkit.go = function (location) {

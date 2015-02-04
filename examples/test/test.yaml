@@ -75,6 +75,11 @@ look: A heart defibrillator can magically revive a dead person, if all those hos
 take: true
 
 ---
+object: wallpaper
+look: There's really nothing interesting about the wallpaper.
+scenery: true
+
+---
 location: kitchen
 description: Just an ordinary kitchen.
 east: garden
