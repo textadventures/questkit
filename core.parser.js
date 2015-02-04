@@ -76,6 +76,7 @@
 			resolveNextName();
 		}
 		else {
+			set('~parserContext', parserContext);
 			questkit.getscript(command + '.action')();
 		}
 	};
