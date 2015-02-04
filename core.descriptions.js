@@ -29,6 +29,9 @@
 			false
 		);
 		if (youCanGo) msg(youCanGo);
+
+		var description = get(povParent, 'description');
+		if (description) msg(description);
 	};
 
 	var displayName = function (object, useDefaultPrefix) {
