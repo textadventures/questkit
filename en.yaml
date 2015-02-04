@@ -76,6 +76,8 @@ defaults:
     ChooseWalkthrough: Choose a walkthrough
     DefaultObjectDescription: Nothing out of the ordinary.
     DisambiguateMenu: 'Please choose which "{0}" you mean'
+    GoListHeader: You can go
+    Or: or
     SeeListHeader: You can see
     UnrecognisedCommand: I don't understand your command.
     UnresolvedDirection: You can't go there.

@@ -9,20 +9,30 @@
 		// TODO: Option to not use "You are in"
 
 		var povParent = questkit.povParent();
+		
 		var descprefix = get(povParent, 'descprefix') || questkit.template('YouAreIn');
-
-		msg(descprefix + ' ' + questkit.displayName(povParent) + '.');
-		var youCanSee = formatObjectList(
+		msg(descprefix + ' ' + displayName(povParent, true) + '.');
+		
+		var objects = removeSceneryObjects(questkit.getDirectChildren(questkit.getNonTransparentParent(povParent)));
+		var youCanSee = formatList(
 			get(povParent, 'objectslistprefix') || questkit.template('SeeListHeader'),
-			questkit.getNonTransparentParent(povParent),
+			objects,
 			questkit.template('And'),
-			'.'
+			true
 		);
 		if (youCanSee) msg(youCanSee);
+
+		var youCanGo = formatList(
+			get(povParent, 'exitslistprefix') || questkit.template('GoListHeader'),
+			removeSceneryExits(questkit.scopeExits()),
+			questkit.template('Or'),
+			false
+		);
+		if (youCanGo) msg(youCanGo);
 	};
 
-	questkit.displayName = function (object) {
-		var prefix = get(object, 'prefix') || questkit.defaultPrefix(object);
+	var displayName = function (object, useDefaultPrefix) {
+		var prefix = get(object, 'prefix') || (useDefaultPrefix ? questkit.defaultPrefix(object) : null);
 		var suffix = get(object, 'suffix');
 		var result = questkit.displayAlias(object);
 		if (prefix) result = prefix + ' ' + result;
@@ -30,15 +40,18 @@
 		return result;
 	};
 
-	var formatObjectList = function (preList, parent, preFinal, postList) {
+	var formatObjectList = function (preList, parent, preFinal) {
+		var list = removeSceneryObjects(questkit.getDirectChildren(parent));
+		return formatList(preList, list, preFinal, true);
+	};
+
+	var formatList = function (preList, list, preFinal, useDefaultPrefix) {
 		var result = [];
 
-		var list = removeSceneryObjects(questkit.getDirectChildren(parent));
-		
 		list.forEach(function (item, index) {
 			if (result.length === 0) result.push(preList, ' ');
-			result.push(questkit.displayName(item));
-			// TODO: If item is transparent, add contained items
+			result.push(displayName(item, useDefaultPrefix));
+
 			if (index === list.length - 2) {
 				result.push(' ', preFinal, ' ');
 			}
@@ -46,7 +59,7 @@
 				result.push(', ');
 			}
 			else {
-				result.push(postList);
+				result.push('.');
 			}
 		});
 
@@ -57,6 +70,13 @@
 		var pov = get('pov');
 		return list.filter(function (item) {
 			return !get(item, 'scenery') && item !== pov;
+		});
+	};
+
+	var removeSceneryExits = function (list) {
+		// TODO: Also remove "look only" exits
+		return list.filter(function (item) {
+			return !get(item, 'scenery');
 		});
 	};
 

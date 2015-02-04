@@ -170,6 +170,7 @@ function Compiler() {
                         '~type': 'exit',
                         parent: name,
                         direction: direction,
+                        alias: direction,
                         to: section[direction]
                     });
 
@@ -179,6 +180,7 @@ function Compiler() {
                         '~type': 'exit',
                         parent: section[direction],
                         direction: compiler.directions[direction],
+                        alias: compiler.directions[direction],
                         to: name
                     });                    
 
@@ -187,7 +189,7 @@ function Compiler() {
             }
 
             if (type == 'exit') {
-                if (!section.alias) section.alias = section.to;
+                if (!section.alias) section.alias = section.direction || section.to;
             }
 
             if (type !== 'location' && type != 'walkthrough') {
