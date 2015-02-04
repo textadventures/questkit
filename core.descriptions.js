@@ -4,9 +4,27 @@
 	'use strict';
 
 	questkit.showLocationDescription = function () {
-		var povParent = questkit.povParent();
+		// TODO: Customisable description order
+		// TODO: Darkness
+		// TODO: Option to not use "You are in"
 
-		msg('You are in ' + povParent);
+		var povParent = questkit.povParent();
+		var descprefix = get(povParent, 'descprefix') || questkit.template('YouAreIn');
+
+		msg(descprefix + ' ' + questkit.displayName(povParent) + '.');
+	};
+
+	questkit.displayName = function (object) {
+		var prefix = get(object, 'prefix') || questkit.defaultPrefix(object);
+		var suffix = get(object, 'suffix');
+		var result = questkit.displayAlias(object);
+		if (prefix) result = prefix + ' ' + result;
+		if (suffix) result = result + ' ' + suffix;
+		return result;
+	};
+
+	questkit.prefix = function (object) {
+
 	};
 
 	questkit.go = function (location) {

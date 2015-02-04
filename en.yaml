@@ -81,3 +81,4 @@ defaults:
     UnresolvedObject: I can't see that.
     UnresolvedObjectMulti: "I can't see that ({0})."
     UnresolvedWalkthrough: No walkthrough of that name.
+    YouAreIn: You are in
