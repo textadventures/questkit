@@ -45,7 +45,7 @@
 			}
 		});
 		return result;
-	}
+	};
 
 	questkit.getAllChildObjects = function (object) {
 		return getChildObjects(object, true);
