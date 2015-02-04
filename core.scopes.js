@@ -35,16 +35,24 @@
 		return result;
 	};
 
-	questkit.getAllChildObjects = function (object) {
+	var getChildObjects = function (object, recurse) {
 		// TODO: Cache direct children of each object
 		var result = [];
 		questkit.allObjects().forEach(function (child) {
 			if (get(child, 'parent') == object) {
 				result.push(child);
-				result = result.concat(questkit.getAllChildObjects(child));
+				if (recurse) result = result.concat(getChildObjects(child, true));
 			}
 		});
 		return result;
+	}
+
+	questkit.getAllChildObjects = function (object) {
+		return getChildObjects(object, true);
+	};
+
+	questkit.getDirectChildren = function (object) {
+		return getChildObjects(object, false);
 	};
 
 	questkit.containsVisible = function (parent, search) {
@@ -121,5 +129,13 @@
 			result.push(exit);
 		});
 		return result;
+	};
+
+	questkit.getNonTransparentParent = function (object) {
+		if (get(object, 'transparent')) {
+			var parent = get(object, 'parent');
+			if (parent) return questkit.getNonTransparentParent(parent);
+		}
+		return object;
 	};
 })();

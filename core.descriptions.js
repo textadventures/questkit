@@ -12,6 +12,13 @@
 		var descprefix = get(povParent, 'descprefix') || questkit.template('YouAreIn');
 
 		msg(descprefix + ' ' + questkit.displayName(povParent) + '.');
+		var youCanSee = formatObjectList(
+			get(povParent, 'objectslistprefix') || questkit.template('SeeListHeader'),
+			questkit.getNonTransparentParent(povParent),
+			questkit.template('And'),
+			'.'
+		);
+		if (youCanSee) msg(youCanSee);
 	};
 
 	questkit.displayName = function (object) {
@@ -23,8 +30,28 @@
 		return result;
 	};
 
-	questkit.prefix = function (object) {
+	var formatObjectList = function (preList, parent, preFinal, postList) {
+		var result = [];
 
+		// TODO: Remove scenery objects
+
+		var list = questkit.getDirectChildren(parent);
+		list.forEach(function (item, index) {
+			if (result.length === 0) result.push(preList, ' ');
+			result.push(questkit.displayName(item));
+			// TODO: If item is transparent, add contained items
+			if (index === list.length - 2) {
+				result.push(' ', preFinal, ' ');
+			}
+			else if (index < list.length - 1) {
+				result.push(', ');
+			}
+			else {
+				result.push(postList);
+			}
+		});
+
+		return result.join('');
 	};
 
 	questkit.go = function (location) {

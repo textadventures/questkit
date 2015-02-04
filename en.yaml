@@ -72,9 +72,11 @@ listwalkthroughs:
 # Default text
 
 defaults:
+    And: and
     ChooseWalkthrough: Choose a walkthrough
     DefaultObjectDescription: Nothing out of the ordinary.
     DisambiguateMenu: 'Please choose which "{0}" you mean'
+    SeeListHeader: You can see
     UnrecognisedCommand: I don't understand your command.
     UnresolvedDirection: You can't go there.
     UnresolvedExit: I can't see that.
