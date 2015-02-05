@@ -150,7 +150,9 @@ walkthrough: test
 steps:
     - x tv
     - x bob
+    - assert: get(get('pov'), 'parent') == 'lounge'
     - s
+    - assert: get(get('pov'), 'parent') == 'kitchen'
     - x eggs
     - weigh eggs
 

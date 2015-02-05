@@ -281,6 +281,18 @@ function Compiler() {
             }
         }
 
+        if (type == 'walkthrough') {
+            for (var i = 0; i < section.steps.length; i++) {
+                var step = section.steps[i];
+                if (step.assert) {
+                    outputJsFile.push('initData.scripts[\'{0}.{1}\'] = function () {\n'.format(name, i));
+                    this.writeJs(outputJsFile, 1, 'return ' + step.assert + ';');
+                    outputJsFile.push('};\n');
+                    step.script = '{0}.{1}'.format(name, i);
+                }
+            }
+        }
+
         var attrs = Object.keys(section).slice(0);
         attrs.shift();
         attrs.forEach(function (attr) {

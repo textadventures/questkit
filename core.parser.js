@@ -232,11 +232,22 @@
 
 	questkit.runWalkthrough = function (walkthrough) {
 		var steps = get(walkthrough, 'steps');
-		steps.forEach(function (step) {
+		for (var i = 0; i < steps.length; i++) {
+			var step = steps[i];
 			msg('');
-			msg('* ' + step);
-			questkit.handleCommand(step);
-		});
+			if (!step.assert) {
+				msg('* ' + step);
+				questkit.handleCommand(step);
+			}
+			else {
+				msg('? ' + step.assert);
+				if (!getscript(step.script)()) {
+					msg('FAILURE');
+					return;
+				}
+				msg('OK');
+			}
+		}
 	};
 
 	questkit.listWalkthroughs = function () {
