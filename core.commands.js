@@ -32,10 +32,10 @@
 		// TODO: Object "article" ("it" etc.) - NB it's *not* an article, use the correct terminology
 		if (get(object, 'take')) {
 			set(object, 'parent', get('pov'));
-			msg(questkit.template('TakeSuccessful').format('it'));
+			msg(questkit.template('TakeSuccessful').format(questkit.objectPronoun(object)));
 			return;
 		}
 
-		msg(questkit.template('TakeUnsuccessful').format('it'));
+		msg(questkit.template('TakeUnsuccessful').format(questkit.objectPronoun(object)));
 	};
 })();

@@ -60,6 +60,14 @@ String.prototype.format = function () {
 		return object;
 	};
 
+	questkit.subjectPronoun = function (object) {
+		return get(object, 'subjectpronoun') || questkit.defaultSubjectPronoun(object);
+	};
+
+	questkit.objectPronoun = function (object) {
+		return get(object, 'objectpronoun') || questkit.defaultObjectPronoun(object);
+	};
+
 	questkit.template = function (template) {
 		return world.templates[template];
 	};

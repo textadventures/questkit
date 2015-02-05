@@ -87,7 +87,7 @@ east: garden
 ---
 object: eggs
 weight: 250
-prefix: some
+plural: true
 look:
     script: msg ("A box of eggs, weighing " + get("eggs.weight") + " grams.");
 
