@@ -37,6 +37,7 @@ function Compiler() {
             'core.scopes.js',
             'core.parser.js',
             'core.descriptions.js',
+            'core.commands.js',
             'en.js',
         ];
 

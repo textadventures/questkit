@@ -60,29 +60,6 @@ String.prototype.format = function () {
 		return object;
 	};
 
-	questkit.goDirection = function (direction) {
-		// TODO: Locked exits, exits with scripts
-		var foundExit;
-		questkit.scopeExits().forEach(function (exit) {
-			if (get(exit, 'direction') == direction) {
-				foundExit = exit;
-				return;
-			}
-		});
-
-		if (!foundExit) {
-			msg(questkit.template('UnresolvedDirection'));
-			return;
-		}
-
-		questkit.goToExit(foundExit);
-	};
-
-	questkit.goToExit = function (exit) {
-		// TODO: Locked exits, exits with scripts
-		questkit.go(get(exit, 'to'));
-	};
-
 	questkit.template = function (template) {
 		return world.templates[template];
 	};

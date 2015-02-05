@@ -122,3 +122,10 @@ patterns:
     template: listwalkthroughs
 action:
     script: questkit.listWalkthroughs();
+
+---
+command: take
+patterns:
+    template: take
+action:
+    script: questkit.take(object);

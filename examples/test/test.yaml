@@ -150,9 +150,11 @@ walkthrough: test
 steps:
     - x tv
     - x bob
-    - assert: get(get('pov'), 'parent') == 'lounge'
+    - take defib
+    - assert: get('defibrillator.parent') == 'player'
+    - assert: get('player.parent') == 'lounge'
     - s
-    - assert: get(get('pov'), 'parent') == 'kitchen'
+    - assert: get('player.parent') == 'kitchen'
     - x eggs
     - weigh eggs
 
