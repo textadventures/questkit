@@ -3,7 +3,7 @@
 
 'use strict';
 
-var questKitVersion = '0.0.1';
+var questKitVersion = '6.0.0-alpha.1';
 
 var path = require('path');
 var fs = require('fs');
