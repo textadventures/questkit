@@ -72,7 +72,7 @@
 			template = 'DropSuccessful';
 		}
 		else {
-			template = 'DropUnsuccessful'
+			template = 'DropUnsuccessful';
 		}
 
 		msg ((showName ? questkit.displayAlias(object) + ': ' : '') + questkit.template(template).format(it));
