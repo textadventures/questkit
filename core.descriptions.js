@@ -14,7 +14,7 @@
 		msg(descprefix + ' ' + displayName(povParent, true) + '.');
 		
 		var objects = removeSceneryObjects(questkit.getDirectChildren(questkit.getNonTransparentParent(povParent)));
-		var youCanSee = formatList(
+		var youCanSee = questkit.formatList(
 			get(povParent, 'objectslistprefix') || questkit.template('SeeListHeader'),
 			objects,
 			questkit.template('And'),
@@ -22,7 +22,7 @@
 		);
 		if (youCanSee) msg(youCanSee);
 
-		var youCanGo = formatList(
+		var youCanGo = questkit.formatList(
 			get(povParent, 'exitslistprefix') || questkit.template('GoListHeader'),
 			removeSceneryExits(questkit.scopeExits()),
 			questkit.template('Or'),
@@ -45,10 +45,10 @@
 
 	var formatObjectList = function (preList, parent, preFinal) {
 		var list = removeSceneryObjects(questkit.getDirectChildren(parent));
-		return formatList(preList, list, preFinal, true);
+		return questkit.formatList(preList, list, preFinal, true);
 	};
 
-	var formatList = function (preList, list, preFinal, useDefaultPrefix) {
+	questkit.formatList = function (preList, list, preFinal, useDefaultPrefix) {
 		var result = [];
 
 		list.forEach(function (item, index) {

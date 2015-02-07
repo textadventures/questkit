@@ -58,6 +58,10 @@ godown:
 goto:
     - "go #exit#"
     - "go to #exit#"
+inventory:
+    - i
+    - inv
+    - inventory
 look:
     - look
     - l
@@ -85,6 +89,7 @@ listwalkthroughs:
 defaults:
     AlreadyTaken: "You are already carrying {0}."
     And: and
+    CarryingListHeader: You are carrying
     ChooseWalkthrough: Choose a walkthrough
     DefaultObjectDescription: Nothing out of the ordinary.
     DisambiguateMenu: 'Please choose which "{0}" you mean'
@@ -92,6 +97,7 @@ defaults:
     DropUnsuccessful: "You can't drop {0}."
     GoListHeader: You can go
     NotCarrying: "You are not carrying {0}."
+    NotCarryingAnything: You are not carrying anything.
     NothingToUndo: Nothing to undo!
     Or: or
     SeeListHeader: You can see

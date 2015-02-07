@@ -96,6 +96,19 @@ action:
     script: questkit.goToExit(exit)
 
 ---
+command: inventory
+patterns:
+    template: inventory
+action:
+    script: |
+        var list = questkit.scopeInventory();
+        if (list.length == 0) {
+            msg(questkit.template('NotCarryingAnything'));
+            return;
+        }
+        msg(questkit.formatList(questkit.template('CarryingListHeader'), list, questkit.template('And'), true));
+
+---
 command: listwalkthroughs
 patterns:
     template: listwalkthroughs
