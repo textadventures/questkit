@@ -29,12 +29,19 @@
 	questkit.take = function (object) {
 		// TODO: Full conversion
 
-		if (get(object, 'take')) {
-			set(object, 'parent', get('pov'));
-			msg(questkit.template('TakeSuccessful').format(questkit.objectPronoun(object)));
+		var it = questkit.objectPronoun(object);
+
+		if (get(object, 'parent') == get('pov')) {
+			msg(questkit.template('AlreadyTaken').format(it));
 			return;
 		}
 
-		msg(questkit.template('TakeUnsuccessful').format(questkit.objectPronoun(object)));
+		if (get(object, 'take')) {
+			set(object, 'parent', get('pov'));
+			msg(questkit.template('TakeSuccessful').format(it));
+			return;
+		}
+
+		msg(questkit.template('TakeUnsuccessful').format(it));
 	};
 })();

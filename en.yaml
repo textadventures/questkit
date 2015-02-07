@@ -78,6 +78,7 @@ listwalkthroughs:
 # Default text
 
 defaults:
+    AlreadyTaken: "You are already carrying {0}."
     And: and
     ChooseWalkthrough: Choose a walkthrough
     DefaultObjectDescription: Nothing out of the ordinary.
