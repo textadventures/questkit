@@ -26,41 +26,55 @@
 		questkit.go(get(exit, 'to'));
 	};
 
-	questkit.take = function (object) {
+	questkit.take = function (objects) {
+		objects.forEach(function (object) {
+			take(object, objects.length > 1);
+		});
+	};
+
+	var take = function (object, showName) {
 		// TODO: Full conversion
 
+		var template;
 		var it = questkit.objectPronoun(object);
 
 		if (get(object, 'parent') == get('pov')) {
-			msg(questkit.template('AlreadyTaken').format(it));
-			return;
+			template = 'AlreadyTaken';
 		}
-
-		if (get(object, 'take')) {
+		else if (get(object, 'take')) {
 			set(object, 'parent', get('pov'));
-			msg(questkit.template('TakeSuccessful').format(it));
-			return;
+			template = 'TakeSuccessful';
+		}
+		else {
+			template = 'TakeUnsuccessful';	
 		}
 
-		msg(questkit.template('TakeUnsuccessful').format(it));
+		msg ((showName ? questkit.displayAlias(object) + ': ' : '') + questkit.template(template).format(it));
 	};
 
-	questkit.drop = function (object) {
+	questkit.drop = function (objects) {
+		objects.forEach(function (object) {
+			drop(object, objects.length > 1);
+		});
+	};
+
+	var drop = function (object, showName) {
 		// TODO: Full conversion
 
+		var template;
 		var it = questkit.objectPronoun(object);
 
 		if (questkit.scopeInventory().indexOf(object) == -1) {
-			msg(questkit.template('NotCarrying').format(it));
-			return;
+			template = 'NotCarrying';
 		}
-
-		if (get(object, 'drop') !== false) {
+		else if (get(object, 'drop') !== false) {
 			set(object, 'parent', questkit.povParent());
-			msg(questkit.template('DropSuccessful').format(it));
-			return;
+			template = 'DropSuccessful';
+		}
+		else {
+			template = 'DropUnsuccessful'
 		}
 
-		msg(questkit.template('DropUnsuccessful').format(it));
-	};	
+		msg ((showName ? questkit.displayAlias(object) + ': ' : '') + questkit.template(template).format(it));
+	};
 })();

@@ -105,7 +105,13 @@
 		}
 
 		if (resolveScope) {
-			var result = resolveName(args[index], resolveScope);
+			var result;
+			if (getscript(command, 'multiple')) {				
+				result = resolveNameList(args[index], resolveScope, command);
+			}
+			else {
+				result = resolveName(args[index], resolveScope);
+			}
 
 			if (result.resolved) {
 				args[index] = result.value;
@@ -184,6 +190,32 @@
 			resolved: resolved,
 			pending: pending,
 			value: result
+		};
+	};
+
+	var resolveNameList = function (value, scope, command) {
+		if (questkit.template('AllObjects').indexOf(value) !== -1) {
+			return {
+				resolved: true,
+				pending: false,
+				value: getscript(command, 'multiple')()
+			};
+		}
+
+		var list = value.split(new RegExp(',| ' + questkit.template('And') + ' '));
+
+		if (list.length == 1) {
+			var result = resolveName(value, scope);
+			result.value = [result.value];
+			return result;
+		}
+
+		// TODO: Handle multiple items. Go through list, add to args[index].
+		// If we get stuck, pop up disamb menu
+
+		return {
+			resolved: false,
+			pending: false
 		};
 	};
 

@@ -1,8 +1,10 @@
 command: drop
 patterns:
     template: drop
+multiple:
+    script: return questkit.getDirectChildren(get('pov'));
 action:
-    script: questkit.drop(object);
+    script: questkit.drop(objects);
 
 ---
 command: gonorth
@@ -147,8 +149,10 @@ action:
 command: take
 patterns:
     template: take
+multiple:
+    script: return questkit.removeSceneryObjects(questkit.getDirectChildren(questkit.povParent()));
 action:
-    script: questkit.take(object);
+    script: questkit.take(objects);
 
 ---
 command: walkthrough

@@ -1,5 +1,5 @@
 drop:
-    - "drop #object#"
+    - "drop #objects#"
 gonorth:
     - go north
     - go to north
@@ -72,9 +72,9 @@ lookat:
     - "exam #object#"
     - "ex #object#"
 take:
-    - "take #object#"
-    - "get #object#"
-    - "pick up #object#"
+    - "take #objects#"
+    - "get #objects#"
+    - "pick up #objects#"
 undo:
     - undo
 
@@ -87,6 +87,9 @@ listwalkthroughs:
 # Default text
 
 defaults:
+    AllObjects:
+        - all
+        - everything
     AlreadyTaken: "You are already carrying {0}."
     And: and
     CarryingListHeader: You are carrying

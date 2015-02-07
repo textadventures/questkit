@@ -13,7 +13,7 @@
 		var descprefix = get(povParent, 'descprefix') || questkit.template('YouAreIn');
 		msg(descprefix + ' ' + displayName(povParent, true) + '.');
 		
-		var objects = removeSceneryObjects(questkit.getDirectChildren(questkit.getNonTransparentParent(povParent)));
+		var objects = questkit.removeSceneryObjects(questkit.getDirectChildren(questkit.getNonTransparentParent(povParent)));
 		var youCanSee = questkit.formatList(
 			get(povParent, 'objectslistprefix') || questkit.template('SeeListHeader'),
 			objects,
@@ -24,7 +24,7 @@
 
 		var youCanGo = questkit.formatList(
 			get(povParent, 'exitslistprefix') || questkit.template('GoListHeader'),
-			removeSceneryExits(questkit.scopeExits()),
+			questkit.removeSceneryExits(questkit.scopeExits()),
 			questkit.template('Or'),
 			false
 		);
@@ -44,7 +44,7 @@
 	};
 
 	var formatObjectList = function (preList, parent, preFinal) {
-		var list = removeSceneryObjects(questkit.getDirectChildren(parent));
+		var list = questkit.removeSceneryObjects(questkit.getDirectChildren(parent));
 		return questkit.formatList(preList, list, preFinal, true);
 	};
 
@@ -69,15 +69,14 @@
 		return result.join('');
 	};
 
-	var removeSceneryObjects = function (list) {
+	questkit.removeSceneryObjects = function (list) {
 		var pov = get('pov');
 		return list.filter(function (item) {
 			return !get(item, 'scenery') && item !== pov;
 		});
 	};
 
-	var removeSceneryExits = function (list) {
-		// TODO: Also remove "look only" exits
+	questkit.removeSceneryExits = function (list) {
 		return list.filter(function (item) {
 			return !get(item, 'scenery');
 		});
