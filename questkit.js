@@ -3,8 +3,6 @@
 
 'use strict';
 
-var questKitVersion = '6.0.0-alpha.2';
-
 var path = require('path');
 var fs = require('fs');
 var yaml = require('js-yaml');
@@ -15,6 +13,9 @@ String.prototype.format = function () {
       return typeof args[number] != 'undefined' ? args[number] : match;
     });
 };
+
+var packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json')).toString());
+var questKitVersion = packageJson.version;
 
 function Compiler() {
     this.language = {};
