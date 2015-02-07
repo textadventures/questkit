@@ -1,22 +1,8 @@
-command: lookat
+command: drop
 patterns:
-    template: lookat
+    template: drop
 action:
-    script: |
-        var found = false;
-        var text = get(object, 'look');
-        if (text) {
-            msg(text);
-            found = true;
-        }
-        var script = getscript(object, 'look');
-        if (script) {
-            script();
-            found = true;
-        }
-        if (!found) {
-            msg(questkit.template('DefaultObjectDescription'));
-        }
+    script: questkit.drop(object);
 
 ---
 command: gonorth
@@ -110,13 +96,6 @@ action:
     script: questkit.goToExit(exit)
 
 ---
-command: walkthrough
-patterns:
-    template: walkthrough
-action:
-    script: questkit.runWalkthrough(walkthrough);
-
----
 command: listwalkthroughs
 patterns:
     template: listwalkthroughs
@@ -124,11 +103,39 @@ action:
     script: questkit.listWalkthroughs();
 
 ---
+command: lookat
+patterns:
+    template: lookat
+action:
+    script: |
+        var found = false;
+        var text = get(object, 'look');
+        if (text) {
+            msg(text);
+            found = true;
+        }
+        var script = getscript(object, 'look');
+        if (script) {
+            script();
+            found = true;
+        }
+        if (!found) {
+            msg(questkit.template('DefaultObjectDescription'));
+        }
+
+---
 command: take
 patterns:
     template: take
 action:
     script: questkit.take(object);
+
+---
+command: walkthrough
+patterns:
+    template: walkthrough
+action:
+    script: questkit.runWalkthrough(walkthrough);
 
 ---
 command: undo

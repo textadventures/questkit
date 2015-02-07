@@ -1,9 +1,5 @@
-lookat:
-    - "look at #object#"
-    - "x #object#"
-    - "examine #object#"
-    - "exam #object#"
-    - "ex #object#"
+drop:
+    - "drop #object#"
 gonorth:
     - go north
     - go to north
@@ -62,6 +58,12 @@ godown:
 goto:
     - "go #exit#"
     - "go to #exit#"
+lookat:
+    - "look at #object#"
+    - "x #object#"
+    - "examine #object#"
+    - "exam #object#"
+    - "ex #object#"
 take:
     - "take #object#"
     - "get #object#"
@@ -83,7 +85,10 @@ defaults:
     ChooseWalkthrough: Choose a walkthrough
     DefaultObjectDescription: Nothing out of the ordinary.
     DisambiguateMenu: 'Please choose which "{0}" you mean'
+    DropSuccessful: "You drop {0}."
+    DropUnsuccessful: "You can't drop {0}."
     GoListHeader: You can go
+    NotCarrying: "You are not carrying {0}."
     NothingToUndo: Nothing to undo!
     Or: or
     SeeListHeader: You can see
