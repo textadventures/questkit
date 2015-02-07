@@ -129,3 +129,11 @@ patterns:
     template: take
 action:
     script: questkit.take(object);
+
+---
+command: undo
+patterns:
+    template: undo
+isundo: true
+action:
+    script: questkit.undo();

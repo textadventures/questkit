@@ -72,8 +72,6 @@ String.prototype.format = function () {
 		return world.templates[template];
 	};
 
-	// questkit script commmands =====================================================
-
 	questkit.get = function (arg1, arg2) {
 		var attribute = arg1;
 		if (arg2) {
@@ -84,14 +82,48 @@ String.prototype.format = function () {
 		return JSON.parse(value);
 	};
 
-	questkit.set = function (arg1, arg2, arg3) {
+	questkit.set = function (arg1, arg2, arg3, isUndoing) {
 		var attribute = arg1;
 		var value = arg2;
 		if (arg3) {
 			attribute = arg1 + '.' + arg2;
 			value = arg3;
 		}
+		if (!isUndoing) logOldValue(attribute);
 		world.attributes[attribute] = JSON.stringify(value);
+	};
+
+	questkit.startTransaction = function (command) {
+		var current = get('~undo.current') || 0;
+		current++;
+		set('~undo.current', current);
+		set('~undo', 'log' + current, {});
+		set('~undo', 'command' + current, command);
+	};
+
+	var logOldValue = function (attribute) {
+		if (attribute.indexOf('~undo.') === 0) return;
+		var current = get('~undo.current');
+		if (!current) return;
+		var log = get('~undo', 'log' + current);
+		if (attribute in log) return;
+		log[attribute] = get(attribute);
+		set('~undo', 'log' + current, log);
+	};
+
+	questkit.undo = function () {
+		var current = get('~undo.current') || 0;
+		if (!current) {
+			msg(questkit.template('NothingToUndo'));
+			return;
+		}
+		var log = get('~undo', 'log' + current);
+		msg(questkit.template('UndoTurn').format(get('~undo', 'command' + current)));
+		for (var attribute in log) {
+			set(attribute, log[attribute], null, true);
+		}
+		current--;
+		set('~undo.current', current);
 	};
 
 	questkit.getscript = function (arg1, arg2) {

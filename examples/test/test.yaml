@@ -155,8 +155,15 @@ steps:
     - assert: get('player.parent') == 'lounge'
     - s
     - assert: get('player.parent') == 'kitchen'
+    - undo
+    - assert: get('player.parent') == 'lounge'
+    - assert: get('defibrillator.parent') == 'player'
+    - undo
+    - assert: get('defibrillator.parent') == 'lounge'
+    - s
     - x eggs
     - weigh eggs
+    - n
 
 ---
 walkthrough: test 2

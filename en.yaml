@@ -66,6 +66,8 @@ take:
     - "take #object#"
     - "get #object#"
     - "pick up #object#"
+undo:
+    - undo
 
 # Debugging only
 walkthrough:
@@ -81,10 +83,12 @@ defaults:
     DefaultObjectDescription: Nothing out of the ordinary.
     DisambiguateMenu: 'Please choose which "{0}" you mean'
     GoListHeader: You can go
+    NothingToUndo: Nothing to undo!
     Or: or
     SeeListHeader: You can see
     TakeSuccessful: "You pick {0} up."
     TakeUnsuccessful: "You can't take {0}."
+    UndoTurn: "Undo: {0}"
     UnrecognisedCommand: I don't understand your command.
     UnresolvedDirection: You can't go there.
     UnresolvedExit: I can't see that.

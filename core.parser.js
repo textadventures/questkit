@@ -55,7 +55,7 @@
 		});
 
 		if (maxStrength > -1) {
-			handleCommandPattern(command, bestMatch);
+			handleCommandPattern(input, command, bestMatch);
 		}
 		else {
 			// TODO: Use game.unresolvedcommandhandler if it exists?
@@ -63,21 +63,21 @@
 		}
 	};
 
-	var handleCommandPattern = function (command, match) {
+	var handleCommandPattern = function (input, command, match) {
 		if (questkit.commandRegex(command).groups.length > 0) {
 			var args = match.slice(0);
 			args.shift();
 			var parserContext = {
 				command: command,
 				args: args,
-				nextArgIndex: 0
+				nextArgIndex: 0,
+				input: input
 			};
 			set('~parserContext', parserContext);
 			resolveNextName();
 		}
 		else {
-			set('~parserContext', null);
-			questkit.getscript(command + '.action')();
+			runCommand(input, command);
 		}
 	};
 
@@ -141,8 +141,7 @@
 			resolveNextName();
 		}
 		else {
-			set('~parserContext', null);
-			questkit.getscript(command + '.action').apply(this, args);
+			runCommand(parserContext.input, command, args);
 		}
 	};
 
@@ -229,6 +228,14 @@
 		parserContext.options = null;
 		set('~parserContext', parserContext);
 		finishedResolvingName();
+	};
+
+	var runCommand = function (input, command, args) {
+		set('~parserContext', null);
+		if (!get(command, 'isundo')) {
+			questkit.startTransaction(input);
+		}
+		questkit.getscript(command + '.action').apply(this, args);
 	};
 
 	questkit.runWalkthrough = function (walkthrough) {
