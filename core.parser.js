@@ -152,7 +152,6 @@
 	};
 
 	var resolveName = function (name, scope) {
-		// TODO: lists (e.g. "take all")
 		// TODO: command metadata for non-disambiguating hyperlinks
 
 		var fullMatches = [];
@@ -202,21 +201,9 @@
 			};
 		}
 
-		var list = value.split(new RegExp(',| ' + questkit.template('And') + ' '));
-
-		if (list.length == 1) {
-			var result = resolveName(value, scope);
-			result.value = [result.value];
-			return result;
-		}
-
-		// TODO: Handle multiple items. Go through list, add to args[index].
-		// If we get stuck, pop up disamb menu
-
-		return {
-			resolved: false,
-			pending: false
-		};
+		var result = resolveName(value, scope);
+		result.value = [result.value];
+		return result;
 	};
 
 	var compareNames = function (enteredName, nameCandidate, object, fullMatches, partialMatches) {
