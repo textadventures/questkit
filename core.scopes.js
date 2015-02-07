@@ -32,6 +32,9 @@
 				result.push(object);
 			}
 		});
+		if (location == get(pov, 'parent')) {
+			result.push(pov);
+		}
 		return result;
 	};
 

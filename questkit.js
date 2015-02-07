@@ -61,12 +61,12 @@ function Compiler() {
 
             // If a player object doesn't exist already, create it in the first location
 
-            var foundPlayer = false;
+            var player = null;
             var firstLocation;
 
             sections.forEach(function (section) {
                 if (section['~name'] == 'player') {
-                    foundPlayer = true;
+                    player = section;
                     return;
                 }
 
@@ -75,13 +75,17 @@ function Compiler() {
                 }
             });
 
-            if (!foundPlayer) {
-                sections.push({
+            if (!player) {
+                player = {
                     '~name': 'player',
                     '~type': 'object',
                     parent: firstLocation
-                });
+                };
+                sections.push(player);
             }
+
+            if (!player.look) player.look = this.language.defaults.DefaultSelfDescription;
+            if (!player.povAlias) player.povAlias = this.language.defaults.SelfAlias;
         }
 
         Object.keys(game).forEach(function (attr) {

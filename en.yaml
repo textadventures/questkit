@@ -95,6 +95,7 @@ defaults:
     CarryingListHeader: You are carrying
     ChooseWalkthrough: Choose a walkthrough
     DefaultObjectDescription: Nothing out of the ordinary.
+    DefaultSelfDescription: Looking good.
     DisambiguateMenu: 'Please choose which "{0}" you mean'
     DropSuccessful: "You drop {0}."
     DropUnsuccessful: "You can't drop {0}."
@@ -104,6 +105,7 @@ defaults:
     NothingToUndo: Nothing to undo!
     Or: or
     SeeListHeader: You can see
+    SelfAlias: me
     TakeSuccessful: "You pick {0} up."
     TakeUnsuccessful: "You can't take {0}."
     UndoTurn: "Undo: {0}"
