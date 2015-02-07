@@ -93,6 +93,7 @@
 })();
 
 $(function () {
+	$('#questkit-input').focus();
 	$('#questkit-input').keydown(function (e) {
 		if (e.which != 13) return;
 		var input = $('#questkit-input').val();
