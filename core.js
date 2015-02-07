@@ -79,7 +79,9 @@ String.prototype.format = function () {
 		if (arg2) {
 			attribute = arg1 + '.' + arg2;
 		}
-		return world.attributes[attribute];
+		var value = world.attributes[attribute];
+		if (value === undefined) return null;
+		return JSON.parse(value);
 	};
 
 	questkit.set = function (arg1, arg2, arg3) {
@@ -89,7 +91,7 @@ String.prototype.format = function () {
 			attribute = arg1 + '.' + arg2;
 			value = arg3;
 		}
-		world.attributes[attribute] = value;
+		world.attributes[attribute] = JSON.stringify(value);
 	};
 
 	questkit.getscript = function (arg1, arg2) {

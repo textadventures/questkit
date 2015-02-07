@@ -109,6 +109,7 @@
 
 			if (result.resolved) {
 				args[index] = result.value;
+				set('~parserContext', parserContext);
 			}
 			else if (result.pending) {
 				startDisambiguation(args[index], result.value);
