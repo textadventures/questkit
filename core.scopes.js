@@ -36,7 +36,6 @@
 	};
 
 	var getChildObjects = function (object, recurse) {
-		// TODO: Cache direct children of each object
 		var result = [];
 		questkit.allObjects().forEach(function (child) {
 			if (get(child, 'parent') == object) {
