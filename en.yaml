@@ -58,6 +58,9 @@ godown:
 goto:
     - "go #exit#"
     - "go to #exit#"
+look:
+    - look
+    - l
 lookat:
     - "look at #object#"
     - "x #object#"

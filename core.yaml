@@ -103,6 +103,13 @@ action:
     script: questkit.listWalkthroughs();
 
 ---
+command: look
+patterns:
+    template: look
+action:
+    script: questkit.showLocationDescription();
+
+---
 command: lookat
 patterns:
     template: lookat
