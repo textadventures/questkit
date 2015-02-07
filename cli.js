@@ -34,4 +34,8 @@ var readline = require('readline');
 			}
 		});
 	};
+
+	questkit.ui.start = function () {
+		questkit.ready();
+	};
 })();

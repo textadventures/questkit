@@ -84,6 +84,12 @@
 
 	questkit.ui.init = function () {
 	};
+
+	questkit.ui.start = function () {
+		$(function () {
+			questkit.ready();
+		});
+	};
 })();
 
 $(function () {
