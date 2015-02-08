@@ -13,8 +13,9 @@
 			createNewDiv('left');
 		}
 
-		$('#questkit-output').append(text + '<br/>');
-		$('#questkit-output').css('min-height', $('#questkit-output').height());
+		questkit.ui.output
+			.append(text + '<br/>')
+			.css('min-height', questkit.ui.output.height());
 	};
 
 	var createNewDiv = function (alignment) {
@@ -24,7 +25,7 @@
 			id: 'questkit-output-section' + getDivCount(),
 			style: 'text-align: ' + alignment,
 			'class': classes
-		}).appendTo('#questkit-output');
+		}).appendTo(questkit.ui.output);
 		setCurrentDiv('#questkit-output-section' + getDivCount());
 	};
 
@@ -68,11 +69,11 @@
 			// TODO: 'easeInOutCubic' is nice here
 			$('body,html').stop().animate({ scrollTop: scrollTo }, duration);
 		}
-		$('#questkit-input').focus();
+		questkit.ui.input.focus();
 	};
 
 	questkit.ui.markScrollPosition = function () {
-		beginningOfCurrentTurnScrollPosition = $('#questkit-output').height();
+		beginningOfCurrentTurnScrollPosition = questkit.ui.output.height();
 	};
 
 	questkit.ui.escapeString = function (str) {
@@ -85,23 +86,28 @@
 	questkit.ui.init = function () {
 	};
 
-	questkit.ui.start = function () {
-		$(function () {
-			questkit.ready();
-		});
-	};
 })();
 
-$(function () {
-	$('#questkit-input').focus();
-	$('#questkit-input').keydown(function (e) {
+$.fn.questkit = function (options) {
+	var settings = $.extend({
+        // TODO: Defaults here
+    }, options);
+
+    questkit.ui.output = this;
+    questkit.ui.input = $(settings.input);
+	questkit.ui.input.focus();
+	questkit.ui.input.keydown(function (e) {
 		if (e.which != 13) return;
-		var input = $('#questkit-input').val();
-		$('#questkit-input').val('');
+		var input = $(this).val();
+		$(this).val('');
 		questkit.ui.markScrollPosition();
 		msg('');
 		msg(questkit.ui.escapeString('> ' + input));
 		questkit.handleCommand(input);
 		questkit.ui.scrollToEnd();
 	});
-});
+
+	questkit.ready();
+    
+    return this;
+};
