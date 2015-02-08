@@ -48,7 +48,11 @@ function Compiler() {
 
         var coreJsFile = fs.readFileSync(path.join(sourcePath, 'core.js'));
         var uiJsFile = fs.readFileSync(path.join(sourcePath, options.cli ? 'cli.js' : 'ui.js'));
-        var jsData = '// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n'.format(questKitVersion) + coreJs + '\n' + uiJsFile.toString();
+        var jsData = '// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n'
+            .format(questKitVersion) +
+            '(function () {\n' +
+            coreJs + '\n' +
+            uiJsFile.toString();
 
         var outputJsFile = [];
         outputJsFile.push(jsData);
@@ -101,7 +105,8 @@ function Compiler() {
         outputJsFile.push('\n');
         outputJsFile.push('initData.templates = ' + JSON.stringify(this.language.defaults, null, '\t') + ';\n');
         outputJsFile.push('questkit.ready = function () { questkit.init(initData); };\n');
-        outputJsFile.push('questkit.ui.start();');
+        outputJsFile.push('questkit.ui.start();\n');
+        outputJsFile.push('})();');
 
         fs.writeFileSync(path.join(outputPath, 'story.js'), outputJsFile.join(''));
 
