@@ -4,10 +4,10 @@ var questkit = {};
 questkit.ui = {};
 
 String.prototype.format = function () {
-    var args = arguments;
-    return this.replace(/{(\d+)}/g, function (match, number) { 
-      return typeof args[number] != 'undefined' ? args[number] : match;
-    });
+	var args = arguments;
+	return this.replace(/{(\d+)}/g, function (match, number) { 
+	  return typeof args[number] != 'undefined' ? args[number] : match;
+	});
 };
 
 (function () {
@@ -26,6 +26,7 @@ String.prototype.format = function () {
 		world.templates = data.templates || {};
 		world.walkthroughs = data.walkthroughs || {};
 
+		questkit.initPov();
 		questkit.startLocation();
 		questkit.ui.init();
 	};
@@ -136,6 +137,24 @@ String.prototype.format = function () {
 
 	questkit.msg = function (text) {
 		questkit.ui.addText(text);
+	};
+
+	questkit.initPov = function (oldPov) {
+		if (oldPov) {
+			set(oldPov, 'alias', get(oldPov, 'externalalias'));
+			set(oldPov, 'alt', get(oldPov, 'externalalt'));
+			set(oldPov, 'look', get(oldPov, 'externallook'));
+		}
+
+		var pov = get('pov');
+
+		set(pov, 'externalalias', get(pov, 'alias'));
+		set(pov, 'externalalt', get(pov, 'alt'));
+		set(pov, 'externallook', get(pov, 'look'));
+
+		set(pov, 'alias', get(pov, 'povalias'));
+		set(pov, 'alt', get(pov, 'povalt'));
+		set(pov, 'look', get(pov, 'povlook'));
 	};
 })();
 

@@ -106,6 +106,9 @@ defaults:
     Or: or
     SeeListHeader: You can see
     SelfAlias: me
+    SelfAlt:
+        - myself
+        - self
     TakeSuccessful: "You pick {0} up."
     TakeUnsuccessful: "You can't take {0}."
     UndoTurn: "Undo: {0}"

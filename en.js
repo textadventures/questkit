@@ -13,6 +13,7 @@
 	};
 
 	questkit.defaultSubjectPronoun = function (object) {
+		if (object === get('pov')) return 'you';
 		if (get(object, 'plural')) return 'they';
 		var gender = get(object, 'gender');
 		if (gender === 'male') {
@@ -25,6 +26,7 @@
 	};
 
 	questkit.defaultObjectPronoun = function (object) {
+		if (object === get('pov')) return 'yourself';
 		if (get(object, 'plural')) return 'them';
 		var gender = get(object, 'gender');
 		if (gender === 'male') {

@@ -85,7 +85,8 @@ function Compiler() {
             }
 
             if (!player.look) player.look = this.language.defaults.DefaultSelfDescription;
-            if (!player.povAlias) player.povAlias = this.language.defaults.SelfAlias;
+            if (!player.povalias) player.povalias = this.language.defaults.SelfAlias;
+            if (!player.povalt) player.povalt = this.language.defaults.SelfAlt;
         }
 
         Object.keys(game).forEach(function (attr) {
