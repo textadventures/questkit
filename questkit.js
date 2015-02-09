@@ -118,7 +118,7 @@ function Compiler() {
 
         fs.writeFileSync(path.join(outputPath, 'story.js'), outputJsFile.join(''));
 
-        if (!options.cli) {
+        if (!options.cli && !options.scriptonly) {
             console.log('Writing index.html');
 
             var htmlTemplateFile = fs.readFileSync(this.findFile('index.template.html', outputPath, sourcePath));
@@ -346,10 +346,12 @@ var argv = require('yargs')
         'Usage: $0 filename.yaml [options]')
     .demand(1)
     .describe('cli', 'Generate command-line version')
+    .describe('scriptonly', 'Only generate JavaScript file')
     .argv;
 
 var options = {
-    cli: argv.cli
+    cli: argv.cli,
+    scriptonly: argv.scriptonly
 };
 
 var compiler = new Compiler();
