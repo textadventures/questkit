@@ -1,8 +1,14 @@
 /* jshint quotmark: single */
 
-exports.process = function (inputFilename, sourcePath, options) {
+exports.generate = function (inputFilename, sourcePath, options) {
 	var compiler = new Compiler();
-	return compiler.process(inputFilename, sourcePath, options);
+	return compiler.generate(inputFilename, sourcePath, options);
+};
+
+exports.getJs = function (inputFilename, sourcePath, options) {
+	var compiler = new Compiler();
+	var result = compiler.process(inputFilename, sourcePath, options);
+	return result.js;
 };
 
 var path = require('path');
@@ -23,15 +29,15 @@ function Compiler() {
     this.language = {};
 
     this.process = function (inputFilename, sourcePath, options) {
-        var outputPath = path.resolve(path.dirname(inputFilename));
+		var inputPath = path.resolve(path.dirname(inputFilename));
 
-        this.language = yaml.safeLoad(fs.readFileSync(path.join(sourcePath, 'en.yaml')));
+    	this.language = yaml.safeLoad(fs.readFileSync(path.join(sourcePath, 'en.yaml')));
 
         var sections = [];
         var storyJs = typeof options.scriptonly === 'string' ? options.scriptonly : 'story.js';
 
         this.processFile(sections, path.resolve(inputFilename), true);
-        this.processFile(sections, this.findFile('core.yaml', outputPath, sourcePath), false);
+        this.processFile(sections, this.findFile('core.yaml', inputPath, sourcePath), false);
 
         console.log('Loaded {0} sections'.format(sections.length));
         console.log('Writing ' + storyJs);
@@ -124,7 +130,19 @@ function Compiler() {
             outputJsFile.push('}(jQuery));');
         }
 
-        fs.writeFileSync(path.join(outputPath, storyJs), outputJsFile.join(''));
+        return {
+        	jsFilename: storyJs,
+        	js: outputJsFile.join(''),
+        	game: game,
+        };
+    };
+
+    this.generate = function (inputFilename, sourcePath, options) {
+        var outputPath = path.resolve(path.dirname(inputFilename));
+
+        var result = this.process(inputFilename, sourcePath, options);
+
+        fs.writeFileSync(path.join(outputPath, result.jsFilename), result.js);
 
         if (!options.cli && !options.scriptonly) {
             console.log('Writing index.html');
@@ -132,7 +150,7 @@ function Compiler() {
             var htmlTemplateFile = fs.readFileSync(this.findFile('index.template.html', outputPath, sourcePath));
             var htmlData = htmlTemplateFile.toString();
             htmlData = htmlData.replace('<!-- INFO -->', '<!--\n\nCreated with QuestKit {0}\n\n\nhttps://github.com/textadventures/questkit\n\n-->'.format(questKitVersion));
-            htmlData = htmlData.replace(/<!-- TITLE -->/g, game.title);           
+            htmlData = htmlData.replace(/<!-- TITLE -->/g, result.game.title);           
             fs.writeFileSync(path.join(outputPath, 'index.html'), htmlData);
 
             console.log('Copying jquery');

@@ -22,7 +22,7 @@ var argv = require('yargs')
     .describe('pluginname', 'Specify the jQuery plugin name instead of .questkit (only with --scriptonly)')
     .argv;
 
-var result = compiler.process(argv._[0], __dirname, argv);
+var result = compiler.generate(argv._[0], __dirname, argv);
 
 if (result && argv.cli) {
     var output = path.join(result, typeof argv.scriptonly === 'string' ? argv.scriptonly : 'story.js');
