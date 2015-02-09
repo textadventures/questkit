@@ -59,15 +59,28 @@
 	};
 
 	questkit.ui.scrollToEnd = function () {
-		var scrollTo = beginningOfCurrentTurnScrollPosition;
-		var currentScrollTop = Math.max($('body').scrollTop(), $('html').scrollTop());
-		if (scrollTo > currentScrollTop) {
-			var maxScrollTop = $(document).height() - $(window).height();
-			if (scrollTo > maxScrollTop) scrollTo = maxScrollTop;
-			var distance = scrollTo - currentScrollTop;
-			var duration = distance / 0.4;
-			// TODO: 'easeInOutCubic' is nice here
-			$('body,html').stop().animate({ scrollTop: scrollTo }, duration);
+		var scrollTo, currentScrollTop, distance, duration;
+		if (questkit.ui.settings.scroll === 'element') {
+			scrollTo = questkit.ui.output[0].scrollHeight - questkit.ui.output.height();
+			currentScrollTop = questkit.ui.output.scrollTop();
+			if (scrollTo > currentScrollTop) {
+				distance = scrollTo - currentScrollTop;
+				duration = distance / 0.4;
+				// TODO: 'easeInOutCubic' is nice here
+				questkit.ui.output.stop().animate({	scrollTop: scrollTo }, duration);
+			}
+		}
+		else {
+			scrollTo = beginningOfCurrentTurnScrollPosition;
+			currentScrollTop = Math.max($('body').scrollTop(), $('html').scrollTop());
+			if (scrollTo > currentScrollTop) {
+				var maxScrollTop = $(document).height() - $(window).height();
+				if (scrollTo > maxScrollTop) scrollTo = maxScrollTop;
+				distance = scrollTo - currentScrollTop;
+				duration = distance / 0.4;
+				// TODO: 'easeInOutCubic' is nice here
+				$('body,html').stop().animate({ scrollTop: scrollTo }, duration);
+			}
 		}
 		questkit.ui.input.focus();
 	};
@@ -90,10 +103,11 @@
 
 $.fn.questkit = function (options) {
 	var settings = $.extend({
-        // TODO: Defaults here
+        scroll: 'body'
     }, options);
 
     questkit.ui.output = this;
+    questkit.ui.settings = settings;
     questkit.ui.input = $(settings.input);
 	questkit.ui.input.focus();
 	questkit.ui.input.keydown(function (e) {
@@ -106,6 +120,10 @@ $.fn.questkit = function (options) {
 		questkit.handleCommand(input);
 		questkit.ui.scrollToEnd();
 	});
+
+	if (settings.scroll === 'element') {
+		questkit.ui.output.css('overflow', 'scroll');
+	}
 
 	questkit.ready();
     
