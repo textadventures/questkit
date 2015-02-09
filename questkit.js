@@ -50,12 +50,17 @@ function Compiler() {
         var startJs = options.cli ? '(function () {' : '(function ($) {';
 
         var coreJsFile = fs.readFileSync(path.join(sourcePath, 'core.js'));
-        var uiJsFile = fs.readFileSync(path.join(sourcePath, options.cli ? 'cli.js' : 'ui.js'));
+        var uiJsFile = fs.readFileSync(path.join(sourcePath, options.cli ? 'cli.js' : 'ui.js')).toString();
+
+        if (options.scriptonly && options.pluginname) {
+            uiJsFile = uiJsFile.replace('$.fn.questkit =', '$.fn.' + options.pluginname + ' =');
+        }
+
         var jsData = '// Created with QuestKit {0}\n// https://github.com/textadventures/questkit\n\n'
             .format(questKitVersion) +
             startJs + '\n' +
             coreJs + '\n' +
-            uiJsFile.toString();
+            uiJsFile;
 
         var outputJsFile = [];
         outputJsFile.push(jsData);
@@ -348,17 +353,13 @@ var argv = require('yargs')
     .demand(1)
     .describe('cli', 'Generate command-line version')
     .describe('scriptonly', 'Only generate JavaScript file (and optionally specify a name)')
+    .describe('pluginname', 'Specify the jQuery plugin name instead of .questkit (only with --scriptonly)')
     .argv;
 
-var options = {
-    cli: argv.cli,
-    scriptonly: argv.scriptonly
-};
-
 var compiler = new Compiler();
-var result = compiler.process(argv._[0], __dirname, options);
+var result = compiler.process(argv._[0], __dirname, argv);
 
-if (result && options.cli) {
+if (result && argv.cli) {
     var output = path.join(result, typeof argv.scriptonly === 'string' ? argv.scriptonly : 'story.js');
     console.log('\nRunning ' + output);
     console.log('Type "q" to exit\n');
