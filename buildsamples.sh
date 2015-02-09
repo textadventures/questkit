@@ -1,0 +1,1 @@
+questkit samples/example.yaml --scriptonly
