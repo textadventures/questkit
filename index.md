@@ -17,7 +17,7 @@ Example
 </pre>
 	</div>
 	<div class="col-md-6">
-		<div id="sample-output"></div>
+		<div id="sample-output" style="height: 270px"></div>
 		<div class="form-group">
 		  <input id="sample-input" class="form-control" placeholder="Type here..." />
 		</div>
@@ -27,7 +27,7 @@ Example
 <script src="samples/story.js"></script>
 <script>
 	$(function(){
-		$("#sample-output").questkit({input:"#sample-input"});
+		$("#sample-output").questkit({input:"#sample-input", scroll:"element"});
 	});
 </script>
 
