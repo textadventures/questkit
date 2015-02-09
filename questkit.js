@@ -26,12 +26,13 @@ function Compiler() {
         this.language = yaml.safeLoad(fs.readFileSync(path.join(sourcePath, 'en.yaml')));
 
         var sections = [];
+        var storyJs = typeof options.scriptonly === 'string' ? options.scriptonly : 'story.js';
 
         this.processFile(sections, path.resolve(inputFilename), true);
         this.processFile(sections, this.findFile('core.yaml', outputPath, sourcePath), false);
 
         console.log('Loaded {0} sections'.format(sections.length));
-        console.log('Writing story.js');
+        console.log('Writing ' + storyJs);
 
         var coreJsFiles = [
             'core.js',
@@ -116,7 +117,7 @@ function Compiler() {
             outputJsFile.push('}(jQuery));');
         }
 
-        fs.writeFileSync(path.join(outputPath, 'story.js'), outputJsFile.join(''));
+        fs.writeFileSync(path.join(outputPath, storyJs), outputJsFile.join(''));
 
         if (!options.cli && !options.scriptonly) {
             console.log('Writing index.html');
@@ -346,7 +347,7 @@ var argv = require('yargs')
         'Usage: $0 filename.yaml [options]')
     .demand(1)
     .describe('cli', 'Generate command-line version')
-    .describe('scriptonly', 'Only generate JavaScript file')
+    .describe('scriptonly', 'Only generate JavaScript file (and optionally specify a name)')
     .argv;
 
 var options = {
@@ -358,7 +359,7 @@ var compiler = new Compiler();
 var result = compiler.process(argv._[0], __dirname, options);
 
 if (result && options.cli) {
-    var output = path.join(result, 'story.js');
+    var output = path.join(result, typeof argv.scriptonly === 'string' ? argv.scriptonly : 'story.js');
     console.log('\nRunning ' + output);
     console.log('Type "q" to exit\n');
     var child = require('child_process');
