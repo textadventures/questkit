@@ -11,12 +11,12 @@ Example
 -------
 
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-7">
 <pre>
 {% include_relative samples/example.yaml %}
 </pre>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-5">
 		<div id="sample-output" style="max-height: 270px"></div>
 		<div class="form-group">
 		  <input id="sample-input" class="form-control" placeholder="Type here..." />

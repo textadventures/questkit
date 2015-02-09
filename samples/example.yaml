@@ -7,7 +7,8 @@ south: another room
 
 ---
 object: book
-description: This is an object. You can pick me up and drop me somewhere else.
+look: This is an object. You can pick me up and drop me somewhere else.
+take: true
 
 ---
 location: another room

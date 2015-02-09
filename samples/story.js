@@ -969,7 +969,8 @@ set('~1.alias', "north");
 set('~1.to', "room");
 
 initData.objects.push('book');
-set('book.description', "This is an object. You can pick me up and drop me somewhere else.");
+set('book.look', "This is an object. You can pick me up and drop me somewhere else.");
+set('book.take', true);
 set('book.parent', "room");
 
 initData.objects.push('another room');
