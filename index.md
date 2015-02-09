@@ -17,7 +17,7 @@ Example
 </pre>
 	</div>
 	<div class="col-md-6">
-		<div id="sample-output" style="height: 270px"></div>
+		<div id="sample-output" style="max-height: 270px"></div>
 		<div class="form-group">
 		  <input id="sample-input" class="form-control" placeholder="Type here..." />
 		</div>
