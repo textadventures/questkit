@@ -1,0 +1,14 @@
+title: QuestKit demo
+
+---
+location: room
+description: This is a simple example of a room in QuestKit.
+south: another room
+
+---
+object: book
+description: This is an object. You can pick me up and drop me somewhere else.
+
+---
+location: another room
+description: This is another room.
