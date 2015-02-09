@@ -1,14 +1,14 @@
 /* jshint quotmark: single */
 
 exports.generate = function (inputFilename, sourcePath, options) {
-	var compiler = new Compiler();
-	return compiler.generate(inputFilename, sourcePath, options);
+    var compiler = new Compiler();
+    return compiler.generate(inputFilename, sourcePath, options);
 };
 
-exports.getJs = function (inputFilename, sourcePath, options) {
-	var compiler = new Compiler();
-	var result = compiler.process(inputFilename, sourcePath, options);
-	return result.js;
+exports.getJs = function (inputFile, sourcePath, options) {
+    var compiler = new Compiler();
+    var result = compiler.process(inputFile, null, sourcePath, options);
+    return result.js;
 };
 
 var path = require('path');
@@ -28,16 +28,16 @@ String.prototype.format = function () {
 function Compiler() {
     this.language = {};
 
-    this.process = function (inputFilename, sourcePath, options) {
-		var inputPath = path.resolve(path.dirname(inputFilename));
-
-    	this.language = yaml.safeLoad(fs.readFileSync(path.join(sourcePath, 'en.yaml')));
+    this.process = function (inputFile, inputPath, sourcePath, options) {
+        this.language = yaml.safeLoad(fs.readFileSync(path.join(sourcePath, 'en.yaml')));
 
         var sections = [];
         var storyJs = typeof options.scriptonly === 'string' ? options.scriptonly : 'story.js';
 
-        this.processFile(sections, path.resolve(inputFilename), true);
-        this.processFile(sections, this.findFile('core.yaml', inputPath, sourcePath), false);
+        var coreYaml = fs.readFileSync(this.findFile('core.yaml', inputPath, sourcePath), 'utf8');
+
+        this.processFile(sections, inputFile, true);
+        this.processFile(sections, coreYaml, false);
 
         console.log('Loaded {0} sections'.format(sections.length));
         console.log('Writing ' + storyJs);
@@ -131,16 +131,17 @@ function Compiler() {
         }
 
         return {
-        	jsFilename: storyJs,
-        	js: outputJsFile.join(''),
-        	game: game,
+            jsFilename: storyJs,
+            js: outputJsFile.join(''),
+            game: game,
         };
     };
 
     this.generate = function (inputFilename, sourcePath, options) {
         var outputPath = path.resolve(path.dirname(inputFilename));
+        var inputFile = fs.readFileSync(path.resolve(inputFilename), 'utf8');
 
-        var result = this.process(inputFilename, sourcePath, options);
+        var result = this.process(inputFile, outputPath, sourcePath, options);
 
         fs.writeFileSync(path.join(outputPath, result.jsFilename), result.js);
 
@@ -172,9 +173,8 @@ function Compiler() {
         return outputPath;
     };
 
-    this.processFile = function (sections, inputFilename, isFirst) {
+    this.processFile = function (sections, file, isFirst) {
         var compiler = this;
-        var file = fs.readFileSync(inputFilename, 'utf8');
 
         var defaultParent;
         var count = 0;
@@ -249,9 +249,11 @@ function Compiler() {
     };
 
     this.findFile = function (filename, outputPath, sourcePath) {
-        var outputPathFile = path.join(outputPath, filename);
-        if (fs.existsSync(outputPathFile)) {
-            return outputPathFile;
+        if (outputPath) {
+            var outputPathFile = path.join(outputPath, filename);
+            if (fs.existsSync(outputPathFile)) {
+                return outputPathFile;
+            }
         }
         return path.join(sourcePath, filename);
     };
