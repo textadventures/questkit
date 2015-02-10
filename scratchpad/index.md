@@ -20,21 +20,7 @@ title: QuestKit ScratchPad
 
 <div class="row">
     <div class="col-md-6" style="height: 500px">
-        <div id="editor">title: QuestKit demo
-
----
-location: room
-description: This is a simple example of a room in QuestKit.
-south: another room
-
----
-object: book
-look: This is an object. You can pick me up and drop me somewhere else.
-take: true
-
----
-location: another room
-description: This is another room.</div>
+        <div id="editor"></div>
     </div>
     <div class="col-md-6">
         <div id="output-container"></div>
@@ -101,6 +87,12 @@ description: This is another room.</div>
             editor.setValue(content, -1);
         });
     }
+    else {
+        var url = $_GET["src"] || "/samples/example.yaml";
+        $.get(url, function (data) {
+            editor.setValue(data, -1);
+        });
+    } 
 
     $("#run").click(function () {
         $("#output").remove();
