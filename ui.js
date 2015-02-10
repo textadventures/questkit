@@ -122,7 +122,7 @@ $.fn.questkit = function (options) {
 	});
 
 	if (settings.scroll === 'element') {
-		questkit.ui.output.css('overflow', 'scroll');
+		questkit.ui.output.css('overflow-y', 'scroll');
 	}
 
 	questkit.ready();
