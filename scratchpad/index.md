@@ -15,6 +15,7 @@ title: QuestKit ScratchPad
 
 <div class="row" style="margin-bottom: 10px">
     <button id="run" class="btn btn-success">Run</button>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#loadgist">Load Gist</button>
 </div>
 
 <div class="row">
@@ -40,6 +41,36 @@ description: This is another room.</div>
     </div>
 </div>
 
+<div class="modal fade" id="loadgist">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Load GitHub Gist</h4>
+      </div>
+      <div class="modal-body">
+        <p>You can load a <a href="https://gist.github.com/" target="_blank">GitHub Gist</a> here.</p>
+        <p>For example, <a href="https://gist.github.com/alexwarren/851ba6e669a7e330b210" target="_blank">https://gist.github.com/alexwarren/851ba6e669a7e330b210</a> has a Gist ID of <code>851ba6e669a7e330b210</code> and a filename of <code>qktest.yaml</code>.</p>
+        <form>
+          <div class="form-group">
+            <label for="gistid">Gist ID</label>
+            <input type="text" class="form-control" id="gistid">
+          </div>
+          <div class="form-group">
+            <label for="filename">Filename</label>
+            <input type="text" class="form-control" id="filename">
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button id="load" type="button" class="btn btn-primary" disabled="disabled">Load</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
 <script>
     var $_GET = {};
@@ -59,6 +90,8 @@ description: This is another room.</div>
     if ($_GET["gistid"] && $_GET["filename"]) {
         var gistid = $_GET["gistid"];
         var filename = $_GET["filename"];
+        $("#gistid").val(gistid);
+        $("#filename").val(filename);
         $.ajax({
             url: "https://api.github.com/gists/" + gistid,
             type: "GET",
@@ -87,5 +120,26 @@ description: This is another room.</div>
             eval(data);
             $("#output").questkit({ input: "#input", scroll: "element" });
         });
+    });
+
+    var setLoadEnabled = function () {
+        if ($("#gistid").val() && $("#filename").val()) {
+            $("#load").removeAttr("disabled");
+        }
+        else {
+            $("#load").attr("disabled", "disabled");
+        }
+    };
+
+    $("#gistid").on("input", function () {
+        setLoadEnabled();
+    });
+
+    $("#filename").on("input", function () {
+        setLoadEnabled();
+    });
+
+    $("#load").click(function () {
+        window.location = "/scratchpad/?gistid=" + $("#gistid").val() + "&filename=" + $("#filename").val();
     });
 </script>
