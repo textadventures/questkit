@@ -31,7 +31,7 @@
     </div>
 
     <div class="container">
-      <h1>{{page.title}}</h1>
+      {% unless page.url contains '/scratchpad' %}<h1>{{page.title}}</h1>{% endunless %}
       {{content}}
 
       <div class="footer">

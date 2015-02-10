@@ -13,6 +13,10 @@ title: QuestKit ScratchPad
     }
 </style>
 
+<div class="row" style="margin-bottom: 10px">
+    <button id="run" class="btn btn-success">Run</button>
+</div>
+
 <div class="row">
     <div class="col-md-6" style="height: 500px">
         <div id="editor">title: QuestKit demo
@@ -32,7 +36,6 @@ location: another room
 description: This is another room.</div>
     </div>
     <div class="col-md-6">
-        <button id="run" class="btn btn-success">Run</button>
         <div id="output-container"></div>
     </div>
 </div>
