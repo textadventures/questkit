@@ -51,6 +51,7 @@ description: This is another room.</div>
     editor.setTheme("ace/theme/eclipse");
     editor.getSession().setMode("ace/mode/yaml");
     editor.getSession().setUseWrapMode(true);
+    editor.focus();
 
     if ($_GET["gistid"] && $_GET["filename"]) {
         var gistid = $_GET["gistid"];
@@ -61,7 +62,7 @@ description: This is another room.</div>
             dataType: "jsonp"
         }).success(function (gistdata) {
             var content = gistdata.data.files[filename].content;
-            editor.setValue(content);
+            editor.setValue(content, -1);
         });
     }
 
