@@ -1,4 +1,4 @@
-// Created with QuestKit 6.0.0-alpha.4
+// Created with QuestKit 6.0.0-alpha.5
 // https://github.com/textadventures/questkit
 
 (function ($) {
@@ -942,7 +942,7 @@ $.fn.questkit = function (options) {
 	});
 
 	if (settings.scroll === 'element') {
-		questkit.ui.output.css('overflow', 'scroll');
+		questkit.ui.output.css('overflow-y', 'scroll');
 	}
 
 	questkit.ready();
