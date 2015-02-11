@@ -88,7 +88,7 @@ title: QuestKit ScratchPad
         });
     }
     else {
-        var url = $_GET["src"] || "/samples/example.yaml";
+        var url = $_GET["src"] || "{{site.baseurl}}/samples/example.yaml";
         $.get(url, function (data) {
             editor.setValue(data, -1);
         });
