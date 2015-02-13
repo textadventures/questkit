@@ -132,6 +132,6 @@ title: QuestKit ScratchPad
     });
 
     $("#load").click(function () {
-        window.location = "/scratchpad/?gistid=" + $("#gistid").val() + "&filename=" + $("#filename").val();
+        window.location = "{{site.baseurl}}/scratchpad/?gistid=" + $("#gistid").val() + "&filename=" + $("#filename").val();
     });
 </script>
