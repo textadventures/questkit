@@ -10,26 +10,7 @@ QuestKit is a tool for creating text adventure games with a parser.
 Example
 -------
 
-<div class="row">
-	<div class="col-md-7">
-<pre>
-{% include_relative samples/example.yaml %}
-</pre>
-	</div>
-	<div class="col-md-5">
-		<div id="sample-output" style="max-height: 270px"></div>
-		<div class="form-group">
-		  <input id="sample-input" class="form-control" placeholder="Type here..." />
-		</div>
-	</div>
-</div>
-
-<script src="samples/story.js"></script>
-<script>
-	$(function(){
-		$("#sample-output").questkit({input:"#sample-input", scroll:"element"});
-	});
-</script>
+{% include sample.html file="example" %}
 
 Contributing
 ------------
