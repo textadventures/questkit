@@ -86,20 +86,25 @@ title: QuestKit ScratchPad
     $("#run").click(function () {
         $("#output").remove();
         $("#input").remove();
-        $.post("http://questkit.textadventures.co.uk", editor.getValue(), function (data) {
-            $("<div/>", { id: "output", style: "max-height: 400px" })
-                .appendTo("#output-container");
 
-            if (data.indexOf("Failed") === 0) {
-                $("#output").html(data);
+        $("<div/>", { id: "output", style: "max-height: 400px" })
+            .appendTo("#output-container");
+
+        $.ajax({
+            url: "http://questkit.textadventures.co.uk",
+            data: editor.getValue(),
+            type: "POST",
+            success: function (data) {
+                $("<input/>", { id: "input", 'class': "form-control", placeholder: 'Type here...' })
+                    .appendTo("#output-container");
+
+                eval(data);
+                $("#output").questkit({ input: "#input", scroll: "element" });
+            },
+            error: function (xhr) {
+                $("#output").html(xhr.responseText);
                 return;
             }
-
-            $("<input/>", { id: "input", 'class': "form-control", placeholder: 'Type here...' })
-                .appendTo("#output-container");
-
-            eval(data);
-            $("#output").questkit({ input: "#input", scroll: "element" });
         });
     });
 
