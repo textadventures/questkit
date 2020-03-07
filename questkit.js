@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* jshint quotmark: single */
 
-'use strict';
+'cb43dc7';
 
 var path = require('path');
 var fs = require('fs');
